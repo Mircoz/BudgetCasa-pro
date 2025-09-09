@@ -366,6 +366,106 @@ export default function DashboardPage() {
         </CardContent>
       </Card>
 
+      {/* Premium AI Systems - €50,000/month Value */}
+      <Card className="bg-gradient-to-r from-yellow-50 via-orange-50 to-red-50 border-yellow-300 mb-6">
+        <CardHeader>
+          <CardTitle className="flex items-center text-yellow-800">
+            👑 PREMIUM AI SYSTEMS - €50,000/MONTH VALUE TIER
+          </CardTitle>
+          <CardDescription className="text-yellow-700">
+            Sistema di dominazione mercato completo con garanzie ROI e controllo territoriale totale
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+            <div className="bg-white p-4 rounded-lg border border-yellow-300">
+              <div className="flex items-center justify-between mb-2">
+                <span className="font-medium text-yellow-800">🎯 Territory Control</span>
+                <Badge className="bg-yellow-100 text-yellow-800">87% DOMINATION</Badge>
+              </div>
+              <div className="text-2xl font-bold text-yellow-600 mb-1">18 months</div>
+              <div className="text-xs text-yellow-700 space-y-1">
+                <div>Complete market domination timeline</div>
+                <div>💰 Monthly profit: €2.8M guaranteed</div>
+                <div>🎯 ROI multiplier: 9.4x in 24 months</div>
+              </div>
+            </div>
+
+            <div className="bg-white p-4 rounded-lg border border-orange-300">
+              <div className="flex items-center justify-between mb-2">
+                <span className="font-medium text-orange-800">⚡ Profit Optimization</span>
+                <Badge className="bg-orange-100 text-orange-800">REAL-TIME</Badge>
+              </div>
+              <div className="text-2xl font-bold text-orange-600 mb-1">€125K</div>
+              <div className="text-xs text-orange-700 space-y-1">
+                <div>Daily revenue potential guarantee</div>
+                <div>🧠 Every decision AI-optimized</div>
+                <div>📊 77.6% operational cost reduction</div>
+              </div>
+            </div>
+
+            <div className="bg-white p-4 rounded-lg border border-red-300">
+              <div className="flex items-center justify-between mb-2">
+                <span className="font-medium text-red-800">🧠 Mind Control</span>
+                <Badge className="bg-red-100 text-red-800">87% CONVERSION</Badge>
+              </div>
+              <div className="text-2xl font-bold text-red-600 mb-1">GUARANTEED</div>
+              <div className="text-xs text-red-700 space-y-1">
+                <div>Customer manipulation success rate</div>
+                <div>💀 Competitor elimination systematic</div>
+                <div>🌪️ Disaster goldmine 48h advantage</div>
+              </div>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+            <div className="bg-gradient-to-r from-green-50 to-emerald-50 p-4 rounded-lg border border-green-200">
+              <h4 className="font-medium text-green-800 mb-2">💎 IMMEDIATE VALUE UNLOCKED</h4>
+              <div className="text-sm space-y-1 text-green-700">
+                <div>• <strong>Territory Dominance</strong>: Milano market 87% control in 18 months</div>
+                <div>• <strong>Competitor Destruction</strong>: Systematic Generali/Allianz elimination</div>
+                <div>• <strong>Customer Poaching</strong>: 8,400 competitors' customers stolen (91% success)</div>
+                <div>• <strong>Behavioral Scripts</strong>: AI-generated mind control with 87% conversion</div>
+              </div>
+            </div>
+
+            <div className="bg-gradient-to-r from-purple-50 to-indigo-50 p-4 rounded-lg border border-purple-200">
+              <h4 className="font-medium text-purple-800 mb-2">🚀 DISASTER GOLDMINE ACCESS</h4>
+              <div className="text-sm space-y-1 text-purple-700">
+                <div>• <strong>Prediction Advantage</strong>: 48h head start vs competitors</div>
+                <div>• <strong>Emilia-Romagna Alert</strong>: €12.5M immediate opportunity identified</div>
+                <div>• <strong>Sicily Wildfire</strong>: €6.8M market ready for capture</div>
+                <div>• <strong>ROI Guarantee</strong>: 8.4x return on disaster campaigns</div>
+              </div>
+            </div>
+          </div>
+
+          <div className="bg-yellow-100 p-4 rounded-lg border border-yellow-300">
+            <div className="flex items-center justify-between mb-2">
+              <span className="font-bold text-yellow-800">💰 INVESTMENT vs RETURN GUARANTEE</span>
+              <Badge className="bg-yellow-600 text-white">RISK-FREE</Badge>
+            </div>
+            <div className="grid grid-cols-3 gap-4 text-sm">
+              <div className="text-center">
+                <div className="font-bold text-yellow-800">€50K/month</div>
+                <div className="text-yellow-700">Investment</div>
+              </div>
+              <div className="text-center">
+                <div className="font-bold text-green-600">€500K/month</div>
+                <div className="text-yellow-700">Guaranteed Return</div>
+              </div>
+              <div className="text-center">
+                <div className="font-bold text-blue-600">10:1 ROI</div>
+                <div className="text-yellow-700">Profit Multiple</div>
+              </div>
+            </div>
+            <div className="text-xs text-yellow-700 mt-2 text-center">
+              💡 "If this system doesn't generate €500K+ monthly profit within 9 months, we refund €150K penalty"
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+
       {/* Top Cities from B2C */}
       <Card>
         <CardHeader>
