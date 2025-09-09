@@ -12,8 +12,6 @@ import {
   LogOut
 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
-import { useAuth } from '@/components/auth/auth-provider'
-
 const navigation = [
   { name: 'Dashboard', href: '/dashboard', icon: LayoutDashboard },
   { name: 'Lead Persone', href: '/leads', icon: Users },
@@ -24,7 +22,6 @@ const navigation = [
 
 export function Sidebar() {
   const pathname = usePathname()
-  const { signOut } = useAuth()
 
   return (
     <div className="flex flex-col h-full bg-gray-900 text-white w-64">
@@ -57,15 +54,9 @@ export function Sidebar() {
 
       {/* Footer */}
       <div className="p-4 border-t border-gray-700">
-        <Button
-          variant="ghost"
-          size="sm"
-          onClick={signOut}
-          className="w-full justify-start text-gray-300 hover:text-white hover:bg-gray-700"
-        >
-          <LogOut className="mr-3 h-4 w-4" />
-          Esci
-        </Button>
+        <div className="text-xs text-gray-500 text-center">
+          Modalità Sviluppo
+        </div>
       </div>
     </div>
   )

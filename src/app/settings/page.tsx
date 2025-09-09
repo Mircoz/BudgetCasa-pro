@@ -17,10 +17,14 @@ import {
   Database,
   CreditCard
 } from 'lucide-react'
-import { useAuth } from '@/components/auth/auth-provider'
-
 export default function SettingsPage() {
-  const { user } = useAuth()
+  // Mock user for development without authentication
+  const user = {
+    email: 'demo@budgetcasa.it',
+    user_metadata: {
+      full_name: 'Demo User'
+    }
+  }
   const [notifications, setNotifications] = useState({
     email: true,
     newLeads: false,
