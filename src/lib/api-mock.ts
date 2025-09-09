@@ -1,7 +1,104 @@
 import type { PersonCard, CompanyCard, PersonFilters, CompanyFilters, SearchResponse, PolicySuggestion } from './types'
+import { B2BLeadFromB2C, InsuranceLeadScorer } from './b2c-integration'
 
-// Mock data for development
+// Mock B2C leads from BudgetCasa.it user simulations
+const mockB2CLeads: B2BLeadFromB2C[] = [
+  {
+    id: 'b2c_user123',
+    source: 'budgetcasa_b2c',
+    name: 'Marco Ferrari',
+    email: 'marco.ferrari@email.com',
+    geo_city: 'Milano',
+    geo_municipality: 'Milano',
+    geo_quarter: 'Isola',
+    household_size: 2,
+    has_children: false,
+    lifestyle: ['sport', 'travel', 'partner'],
+    mobility: ['car', 'bike'],
+    income_monthly: 6500,
+    intent_buy_home: true,
+    budget_range: '600K-800K',
+    property_type_preference: 'apartment',
+    desired_sqm: 85,
+    down_payment_available: 150000,
+    simulation_count: 4,
+    last_simulation_date: '2025-09-07T10:30:00Z',
+    favorite_neighborhoods: ['Isola', 'Brera', 'Navigli'],
+    lead_temperature: 'hot',
+    b2c_engagement_score: 92,
+    created_at: '2025-09-07T10:30:00Z'
+  },
+  {
+    id: 'b2c_user456',
+    source: 'budgetcasa_b2c',
+    name: 'Elena Rossi',
+    email: 'elena.rossi@email.com',
+    geo_city: 'Roma',
+    geo_municipality: 'Roma',
+    geo_quarter: 'Parioli',
+    household_size: 4,
+    has_children: true,
+    lifestyle: ['family', 'wellness'],
+    mobility: ['car', 'public_transport'],
+    income_monthly: 8500,
+    intent_buy_home: true,
+    budget_range: '800K-1M',
+    property_type_preference: 'house',
+    desired_sqm: 120,
+    down_payment_available: 200000,
+    simulation_count: 6,
+    last_simulation_date: '2025-09-06T14:15:00Z',
+    favorite_neighborhoods: ['Parioli', 'Flaminio'],
+    lead_temperature: 'hot',
+    b2c_engagement_score: 88,
+    created_at: '2025-09-05T09:45:00Z'
+  },
+  {
+    id: 'b2c_user789',
+    source: 'budgetcasa_b2c',
+    name: 'Giuseppe Bianchi',
+    email: 'g.bianchi@email.com',
+    geo_city: 'Napoli',
+    geo_municipality: 'Napoli', 
+    geo_quarter: 'Vomero',
+    household_size: 1,
+    has_children: false,
+    lifestyle: ['outdoor'],
+    mobility: ['car'],
+    income_monthly: 4200,
+    intent_buy_home: true,
+    budget_range: '400K-600K',
+    property_type_preference: 'apartment',
+    desired_sqm: 75,
+    down_payment_available: 80000,
+    simulation_count: 2,
+    last_simulation_date: '2025-09-04T16:20:00Z',
+    favorite_neighborhoods: ['Vomero'],
+    lead_temperature: 'warm',
+    b2c_engagement_score: 65,
+    created_at: '2025-09-04T16:20:00Z'
+  }
+]
+
+// Convert B2C leads to PersonCard format for display
+function convertB2CLeadToPersonCard(b2cLead: B2BLeadFromB2C): PersonCard {
+  const insuranceScores = InsuranceLeadScorer.scoreInsuranceOpportunities(b2cLead)
+  
+  return {
+    id: b2cLead.id,
+    name: b2cLead.name,
+    geo_city: b2cLead.geo_city,
+    lifestyle: b2cLead.lifestyle,
+    mobility: b2cLead.mobility,
+    scores: insuranceScores
+  }
+}
+
+// Mock data for development - including B2C converted leads
 const mockPersons: PersonCard[] = [
+  // B2C-sourced leads (premium quality)
+  ...mockB2CLeads.map(convertB2CLeadToPersonCard),
+  // Original mock leads
   {
     id: '1',
     name: 'Mario Rossi',
@@ -272,4 +369,114 @@ export async function trackEvent(eventName: string, properties: Record<string, a
   if (typeof window !== 'undefined' && (window as any).gtag) {
     (window as any).gtag('event', eventName, properties)
   }
+}
+
+// B2C Integration APIs
+export async function getB2CLeads(filters?: {
+  temperature?: 'hot' | 'warm' | 'cold'
+  minBudget?: number
+  maxDaysOld?: number
+  cities?: string[]
+}): Promise<B2BLeadFromB2C[]> {
+  await delay(500)
+  
+  let filteredLeads = [...mockB2CLeads]
+  
+  if (filters?.temperature) {
+    filteredLeads = filteredLeads.filter(l => l.lead_temperature === filters.temperature)
+  }
+  
+  if (filters?.cities?.length) {
+    filteredLeads = filteredLeads.filter(l => filters.cities!.includes(l.geo_city))
+  }
+  
+  if (filters?.minBudget) {
+    filteredLeads = filteredLeads.filter(l => {
+      const budget = extractBudgetNumber(l.budget_range)
+      return budget >= filters.minBudget!
+    })
+  }
+  
+  if (filters?.maxDaysOld) {
+    const cutoff = new Date()
+    cutoff.setDate(cutoff.getDate() - filters.maxDaysOld)
+    filteredLeads = filteredLeads.filter(l => new Date(l.last_simulation_date) >= cutoff)
+  }
+  
+  return filteredLeads.sort((a, b) => b.b2c_engagement_score - a.b2c_engagement_score)
+}
+
+export async function getB2CAnalytics(): Promise<{
+  totalLeads: number
+  hotLeads: number
+  avgEngagementScore: number
+  topCities: { city: string; count: number }[]
+  conversionFunnel: {
+    simulations: number
+    completedSimulations: number
+    qualifiedLeads: number
+    estimatedValue: number
+  }
+  recentActivity: {
+    last24h: number
+    last7days: number
+    last30days: number
+  }
+}> {
+  await delay(300)
+  
+  const leads = mockB2CLeads
+  const hotLeads = leads.filter(l => l.lead_temperature === 'hot')
+  
+  // Calculate city distribution
+  const cityCount: Record<string, number> = {}
+  leads.forEach(l => {
+    cityCount[l.geo_city] = (cityCount[l.geo_city] || 0) + 1
+  })
+  
+  const topCities = Object.entries(cityCount)
+    .sort(([,a], [,b]) => b - a)
+    .slice(0, 5)
+    .map(([city, count]) => ({ city, count }))
+  
+  // Mock activity data
+  const recentActivity = {
+    last24h: 5,
+    last7days: 12,
+    last30days: leads.length
+  }
+  
+  // Mock conversion funnel
+  const totalSimulations = leads.reduce((sum, l) => sum + l.simulation_count, 0)
+  const completedSims = Math.round(totalSimulations * 0.7)
+  const estimatedValue = leads.reduce((sum, l) => {
+    const budget = extractBudgetNumber(l.budget_range)
+    return sum + (budget * 0.02) // 2% commission estimate
+  }, 0)
+  
+  return {
+    totalLeads: leads.length,
+    hotLeads: hotLeads.length,
+    avgEngagementScore: Math.round(leads.reduce((sum, l) => sum + l.b2c_engagement_score, 0) / leads.length),
+    topCities,
+    conversionFunnel: {
+      simulations: totalSimulations,
+      completedSimulations: completedSims,
+      qualifiedLeads: leads.length,
+      estimatedValue: Math.round(estimatedValue)
+    },
+    recentActivity
+  }
+}
+
+function extractBudgetNumber(budgetRange: string): number {
+  const ranges: Record<string, number> = {
+    '<200K': 150000,
+    '200K-400K': 300000,
+    '400K-600K': 500000,
+    '600K-800K': 700000,
+    '800K-1M': 900000,
+    '1M+': 1200000
+  }
+  return ranges[budgetRange] || 0
 }

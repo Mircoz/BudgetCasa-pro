@@ -15,6 +15,9 @@ import {
 } from 'lucide-react'
 import Link from 'next/link'
 
+import { getB2CAnalytics, getB2CLeads } from '@/lib/api-mock'
+import { useState, useEffect } from 'react'
+
 // Mock data for demonstration
 const kpis = [
   {
@@ -75,45 +78,121 @@ const suggestedLeads = [
 ]
 
 export default function DashboardPage() {
+  const [b2cAnalytics, setB2cAnalytics] = useState<any>(null)
+  const [hotB2cLeads, setHotB2cLeads] = useState<any[]>([])
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    const loadDashboardData = async () => {
+      try {
+        const [analytics, hotLeads] = await Promise.all([
+          getB2CAnalytics(),
+          getB2CLeads({ temperature: 'hot', maxDaysOld: 7 })
+        ])
+        setB2cAnalytics(analytics)
+        setHotB2cLeads(hotLeads.slice(0, 5))
+      } catch (error) {
+        console.error('Error loading dashboard data:', error)
+      } finally {
+        setLoading(false)
+      }
+    }
+
+    loadDashboardData()
+  }, [])
+
+  if (loading) {
+    return (
+      <div className="space-y-6">
+        <div className="border-b pb-4">
+          <h1 className="text-3xl font-bold tracking-tight">Dashboard</h1>
+        </div>
+        <div className="flex items-center justify-center py-12">
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
+        </div>
+      </div>
+    )
+  }
+
   return (
     <div className="space-y-6">
       {/* Header */}
       <div className="border-b pb-4">
         <h1 className="text-3xl font-bold tracking-tight">Dashboard</h1>
         <p className="text-muted-foreground">
-          Panoramica delle tue attività e opportunità.
+          Lead qualificati da BudgetCasa.it e analytics assicurative.
         </p>
       </div>
 
-      {/* KPIs Grid */}
+      {/* B2C Analytics KPIs */}
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-        {kpis.map((kpi) => (
-          <Card key={kpi.title}>
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">
-                {kpi.title}
-              </CardTitle>
-              <kpi.icon className="h-4 w-4 text-muted-foreground" />
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold">{kpi.value}</div>
-              <p className="text-xs text-muted-foreground">
-                {kpi.change}
-                {kpi.trend === 'up' && (
-                  <TrendingUp className="inline ml-1 h-3 w-3 text-green-600" />
-                )}
-              </p>
-            </CardContent>
-          </Card>
-        ))}
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">
+              Lead B2C Totali
+            </CardTitle>
+            <Users className="h-4 w-4 text-blue-600" />
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold">{b2cAnalytics?.totalLeads}</div>
+            <p className="text-xs text-muted-foreground">
+              Da simulazioni BudgetCasa.it
+            </p>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">
+              Lead Caldi
+            </CardTitle>
+            <TrendingUp className="h-4 w-4 text-red-500" />
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold text-red-600">{b2cAnalytics?.hotLeads}</div>
+            <p className="text-xs text-muted-foreground">
+              Attività recente alta
+            </p>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">
+              Valore Stimato
+            </CardTitle>
+            <TrendingUp className="h-4 w-4 text-green-600" />
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold">€{(b2cAnalytics?.conversionFunnel.estimatedValue / 1000).toFixed(0)}K</div>
+            <p className="text-xs text-muted-foreground">
+              Commissioni potenziali
+            </p>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">
+              Engagement Score
+            </CardTitle>
+            <MapPin className="h-4 w-4 text-purple-600" />
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold">{b2cAnalytics?.avgEngagementScore}/100</div>
+            <p className="text-xs text-muted-foreground">
+              Qualità media lead
+            </p>
+          </CardContent>
+        </Card>
       </div>
 
       <div className="grid gap-6 md:grid-cols-2">
-        {/* Suggested Leads */}
+        {/* Hot B2C Leads */}
         <Card>
           <CardHeader>
             <CardTitle className="flex items-center justify-between">
-              Suggeriti per Te
+              🔥 Lead Caldi da BudgetCasa.it
               <Button variant="outline" size="sm" asChild>
                 <Link href="/leads">
                   <Plus className="mr-2 h-4 w-4" />
@@ -122,31 +201,30 @@ export default function DashboardPage() {
               </Button>
             </CardTitle>
             <CardDescription>
-              Lead con alte probabilità di conversione
+              Utenti con alta attività recente e budget elevato
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
-            {suggestedLeads.map((lead) => (
+            {hotB2cLeads.map((lead) => (
               <div
                 key={lead.id}
-                className="flex items-center justify-between p-3 rounded-lg border"
+                className="flex items-center justify-between p-3 rounded-lg border bg-red-50"
               >
                 <div className="flex items-center space-x-3">
-                  {lead.type === 'person' ? (
-                    <Users className="h-5 w-5 text-blue-600" />
-                  ) : (
-                    <Building className="h-5 w-5 text-green-600" />
-                  )}
+                  <Users className="h-5 w-5 text-red-600" />
                   <div>
                     <p className="font-medium">{lead.name}</p>
                     <p className="text-sm text-muted-foreground">
-                      {lead.location} • {lead.reason}
+                      {lead.geo_city} • Budget {lead.budget_range} • {lead.simulation_count} simulazioni
+                    </p>
+                    <p className="text-xs text-red-600">
+                      🏠 {lead.favorite_neighborhoods[0]} • 📅 {new Date(lead.last_simulation_date).toLocaleDateString('it-IT')}
                     </p>
                   </div>
                 </div>
                 <div className="flex items-center space-x-2">
-                  <Badge variant="secondary">
-                    {Math.round(lead.score * 100)}%
+                  <Badge variant="destructive">
+                    {lead.b2c_engagement_score}/100
                   </Badge>
                   <Button variant="ghost" size="sm">
                     <ArrowRight className="h-4 w-4" />
@@ -188,20 +266,89 @@ export default function DashboardPage() {
         </Card>
       </div>
 
-      {/* Recent Activity Placeholder */}
+      {/* B2C Conversion Funnel */}
       <Card>
         <CardHeader>
-          <CardTitle>Attività Recente</CardTitle>
+          <CardTitle>Funnel Conversione B2C → Assicurazioni</CardTitle>
           <CardDescription>
-            Le tue ultime azioni sulla piattaforma
+            Pipeline da simulazioni BudgetCasa.it a opportunità assicurative
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <div className="text-center py-8 text-muted-foreground">
-            <p>Nessuna attività recente da visualizzare.</p>
-            <p className="text-sm">
-              Inizia cercando lead o aziende per vedere l'attività qui.
-            </p>
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+            <div className="text-center">
+              <div className="text-2xl font-bold text-blue-600">
+                {b2cAnalytics?.conversionFunnel.simulations}
+              </div>
+              <p className="text-sm text-muted-foreground">Simulazioni Totali</p>
+            </div>
+            <div className="text-center">
+              <div className="text-2xl font-bold text-green-600">
+                {b2cAnalytics?.conversionFunnel.completedSimulations}
+              </div>
+              <p className="text-sm text-muted-foreground">Completate</p>
+            </div>
+            <div className="text-center">
+              <div className="text-2xl font-bold text-purple-600">
+                {b2cAnalytics?.conversionFunnel.qualifiedLeads}
+              </div>
+              <p className="text-sm text-muted-foreground">Lead Qualificati</p>
+            </div>
+            <div className="text-center">
+              <div className="text-2xl font-bold text-yellow-600">
+                €{(b2cAnalytics?.conversionFunnel.estimatedValue / 1000).toFixed(0)}K
+              </div>
+              <p className="text-sm text-muted-foreground">Valore Potenziale</p>
+            </div>
+          </div>
+
+          <div className="mt-6 pt-4 border-t">
+            <h4 className="font-semibold mb-3">Attività Recente da BudgetCasa.it</h4>
+            <div className="grid grid-cols-3 gap-4 text-center">
+              <div>
+                <div className="text-lg font-bold text-green-600">
+                  +{b2cAnalytics?.recentActivity.last24h}
+                </div>
+                <p className="text-sm text-muted-foreground">Ultime 24h</p>
+              </div>
+              <div>
+                <div className="text-lg font-bold text-blue-600">
+                  +{b2cAnalytics?.recentActivity.last7days}
+                </div>
+                <p className="text-sm text-muted-foreground">Ultima settimana</p>
+              </div>
+              <div>
+                <div className="text-lg font-bold text-purple-600">
+                  {b2cAnalytics?.recentActivity.last30days}
+                </div>
+                <p className="text-sm text-muted-foreground">Ultimo mese</p>
+              </div>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* Top Cities from B2C */}
+      <Card>
+        <CardHeader>
+          <CardTitle>🎯 Territori Caldi</CardTitle>
+          <CardDescription>
+            Zone con maggior attività di acquisto casa da BudgetCasa.it
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            {b2cAnalytics?.topCities.map((city: any, index: number) => (
+              <div key={city.city} className="text-center p-4 rounded-lg bg-gray-50">
+                <div className="text-2xl font-bold text-blue-600">
+                  {city.count}
+                </div>
+                <p className="font-medium">{city.city}</p>
+                <p className="text-sm text-muted-foreground">
+                  Lead attivi #{index + 1}
+                </p>
+              </div>
+            ))}
           </div>
         </CardContent>
       </Card>

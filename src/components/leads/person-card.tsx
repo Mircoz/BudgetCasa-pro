@@ -23,21 +23,34 @@ interface PersonCardProps {
 
 export function PersonCard({ person, onAddToList, onViewSuggestions }: PersonCardProps) {
   const { scores } = person
+  const isB2CLead = person.id.startsWith('b2c_')
 
   return (
-    <Card className="hover:shadow-md transition-shadow">
+    <Card className={`hover:shadow-md transition-shadow ${isB2CLead ? 'ring-2 ring-red-100 bg-red-50/30' : ''}`}>
       <CardHeader className="pb-3">
         <div className="flex items-start justify-between">
           <div className="flex items-center space-x-2">
-            <User className="h-5 w-5 text-blue-600" />
+            <User className={`h-5 w-5 ${isB2CLead ? 'text-red-600' : 'text-blue-600'}`} />
             <div>
-              <h3 className="font-semibold text-lg">
-                {person.name || 'Nome non disponibile'}
-              </h3>
+              <div className="flex items-center space-x-2">
+                <h3 className="font-semibold text-lg">
+                  {person.name || 'Nome non disponibile'}
+                </h3>
+                {isB2CLead && (
+                  <Badge variant="destructive" className="text-xs">
+                    🔥 B2C HOT
+                  </Badge>
+                )}
+              </div>
               {person.geo_city && (
                 <div className="flex items-center text-sm text-muted-foreground mt-1">
                   <MapPin className="h-3 w-3 mr-1" />
                   {person.geo_city}
+                  {isB2CLead && (
+                    <span className="ml-2 text-red-600 text-xs">
+                      • Da BudgetCasa.it
+                    </span>
+                  )}
                 </div>
               )}
             </div>
