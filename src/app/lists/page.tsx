@@ -149,6 +149,65 @@ export default function ListsPage() {
         </Button>
       </div>
 
+      {/* AI-Powered List Recommendations */}
+      <Card className="bg-gradient-to-r from-indigo-50 to-purple-50 border-indigo-200 mb-6">
+        <CardHeader>
+          <CardTitle className="flex items-center text-indigo-800">
+            🧠 AI LIST RECOMMENDATIONS
+          </CardTitle>
+          <div className="text-sm text-indigo-600">
+            Machine Learning suggerisce liste ad alta conversione basate su behavioral patterns
+          </div>
+        </CardHeader>
+        <CardContent>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="bg-white p-4 rounded-lg border border-indigo-200">
+              <div className="flex items-center justify-between mb-3">
+                <span className="font-medium text-indigo-800">🔥 Post-Disaster Strike List</span>
+                <Badge className="bg-red-100 text-red-800">URGENT</Badge>
+              </div>
+              <div className="text-sm space-y-2 mb-3">
+                <div>🎯 <strong>Target</strong>: Emilia-Romagna flood zone residents</div>
+                <div>📊 <strong>Size</strong>: 8,340 leads qualificati</div>
+                <div>💰 <strong>Value</strong>: €18.2M potential revenue</div>
+                <div>⏰ <strong>Window</strong>: 18 giorni remaining</div>
+              </div>
+              <Button size="sm" className="w-full bg-red-600 hover:bg-red-700 text-white">
+                Crea Lista AI "Disaster Opportunity"
+              </Button>
+            </div>
+
+            <div className="bg-white p-4 rounded-lg border border-indigo-200">
+              <div className="flex items-center justify-between mb-3">
+                <span className="font-medium text-indigo-800">🎣 Competitor Poaching List</span>
+                <Badge className="bg-blue-100 text-blue-800">HIGH ROI</Badge>
+              </div>
+              <div className="text-sm space-y-2 mb-3">
+                <div>🎯 <strong>Target</strong>: Generali dissatisfied customers</div>
+                <div>📊 <strong>Size</strong>: 1,250 leads verified</div>
+                <div>💰 <strong>Value</strong>: €3.2M steal potential</div>
+                <div>⚡ <strong>Success Rate</strong>: 91% conversion</div>
+              </div>
+              <Button size="sm" className="w-full bg-blue-600 hover:bg-blue-700 text-white">
+                Crea Lista AI "Competitive Conquest"
+              </Button>
+            </div>
+          </div>
+
+          <div className="mt-4 p-3 bg-yellow-50 rounded-lg border border-yellow-200">
+            <div className="flex items-center mb-2">
+              <BookmarkCheck className="h-4 w-4 text-yellow-600 mr-2" />
+              <span className="font-medium text-yellow-800 text-sm">💡 AI Smart Suggestions</span>
+            </div>
+            <div className="text-xs text-yellow-700 space-y-1">
+              <div>• <strong>High Anxiety Profiles</strong>: 2,340 leads con personality traits "protection-oriented" → +73% conversion</div>
+              <div>• <strong>Climate Change Worried</strong>: 1,890 social media signals "climate anxiety" → premium products acceptance</div>
+              <div>• <strong>New Homeowners</strong>: 3,456 recent property purchases → first-time insurance buyers, high LTV</div>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+
       {/* Lists Grid */}
       {lists.length > 0 ? (
         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">

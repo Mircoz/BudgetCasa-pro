@@ -9,13 +9,16 @@ import {
   Building, 
   BookmarkCheck,
   Settings,
-  LogOut
+  LogOut,
+  BarChart3,
+  MapPin
 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 const navigation = [
   { name: 'Dashboard', href: '/dashboard', icon: LayoutDashboard },
   { name: 'Lead Persone', href: '/leads', icon: Users },
   { name: 'Directory Aziende', href: '/companies', icon: Building },
+  { name: 'Market Insights', href: '/insights', icon: BarChart3 },
   { name: 'Liste Salvate', href: '/lists', icon: BookmarkCheck },
   { name: 'Impostazioni', href: '/settings', icon: Settings },
 ]

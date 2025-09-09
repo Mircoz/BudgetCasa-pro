@@ -13,7 +13,7 @@ import {
 } from 'lucide-react'
 import type { PersonCard as PersonCardType } from '@/lib/types'
 import { formatPercentage, getScoreColor, getScoreLabel, formatCurrency } from '@/lib/utils'
-import { LIFESTYLE_LABELS, MOBILITY_LABELS } from '@/lib/types'
+import { LIFESTYLE_LABELS, MOBILITY_LABELS, POLICY_LABELS } from '@/lib/types'
 
 interface PersonCardProps {
   person: PersonCardType
@@ -106,6 +106,28 @@ export function PersonCard({ person, onAddToList, onViewSuggestions }: PersonCar
                     {MOBILITY_LABELS[mobility as keyof typeof MOBILITY_LABELS] || mobility}
                   </Badge>
                 ))}
+              </div>
+            </div>
+          )}
+
+          {/* Policy Interest */}
+          {person.hot_policy && (
+            <div>
+              <p className="text-xs text-muted-foreground mb-1">Polizza Calda</p>
+              <div className="flex flex-wrap gap-1">
+                <Badge 
+                  variant={person.policy_temperature === 'hot' ? 'destructive' : person.policy_temperature === 'warm' ? 'default' : 'outline'} 
+                  className="text-xs"
+                >
+                  🔥 {POLICY_LABELS[person.hot_policy as keyof typeof POLICY_LABELS] || person.hot_policy}
+                </Badge>
+                {person.policy_temperature && (
+                  <Badge variant="secondary" className="text-xs">
+                    {person.policy_temperature === 'hot' ? 'Caldissimo' : 
+                     person.policy_temperature === 'warm' ? 'Tiepido' : 
+                     'Freddo'}
+                  </Badge>
+                )}
               </div>
             </div>
           )}

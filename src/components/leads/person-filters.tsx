@@ -10,6 +10,7 @@ import { Switch } from '@/components/ui/switch'
 import { Badge } from '@/components/ui/badge'
 import { X, Filter } from 'lucide-react'
 import type { PersonFilters } from '@/lib/types'
+import { POLICY_LABELS } from '@/lib/types'
 
 interface PersonFiltersProps {
   filters: PersonFilters
@@ -81,18 +82,18 @@ export function PersonFilters({ filters, onChange, onReset }: PersonFiltersProps
 
       <CardContent className="space-y-4">
         {/* Basic Filters - Always Visible */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
           <div className="space-y-2">
             <Label htmlFor="city">Città</Label>
             <Select 
-              value={filters.city || ''} 
-              onValueChange={(value) => updateFilter('city', value || undefined)}
+              value={filters.city || 'all'} 
+              onValueChange={(value) => updateFilter('city', value === 'all' ? undefined : value)}
             >
               <SelectTrigger>
                 <SelectValue placeholder="Seleziona città" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="">Tutte le città</SelectItem>
+                <SelectItem value="all">Tutte le città</SelectItem>
                 {ITALIAN_CITIES.map((city) => (
                   <SelectItem key={city} value={city}>
                     {city}
@@ -102,6 +103,60 @@ export function PersonFilters({ filters, onChange, onReset }: PersonFiltersProps
             </Select>
           </div>
 
+          <div className="space-y-2">
+            <Label htmlFor="hot_policy">Polizza Calda</Label>
+            <Select 
+              value={filters.hot_policy || 'all'} 
+              onValueChange={(value) => updateFilter('hot_policy', value === 'all' ? undefined : value)}
+            >
+              <SelectTrigger>
+                <SelectValue placeholder="Tutte le polizze" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">Tutte le polizze</SelectItem>
+                <SelectItem value="prima_casa">🏠 Prima Casa</SelectItem>
+                <SelectItem value="rc_auto">🚗 RC Auto</SelectItem>
+                <SelectItem value="cane">🐕 Assicurazione Animali</SelectItem>
+                <SelectItem value="sport">⚽ Sport</SelectItem>
+                <SelectItem value="vita">❤️ Vita</SelectItem>
+                <SelectItem value="salute">🏥 Salute</SelectItem>
+                <SelectItem value="infortuni">🚑 Infortuni</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+
+          <div className="space-y-2">
+            <Label htmlFor="policy_temperature">Temperatura Lead</Label>
+            <Select 
+              value={filters.policy_temperature || 'all'} 
+              onValueChange={(value) => updateFilter('policy_temperature', value === 'all' ? undefined : value)}
+            >
+              <SelectTrigger>
+                <SelectValue placeholder="Tutti i livelli" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">Tutti i livelli</SelectItem>
+                <SelectItem value="hot">🔥 Caldissimo</SelectItem>
+                <SelectItem value="warm">🌤️ Tiepido</SelectItem>
+                <SelectItem value="cold">❄️ Freddo</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+
+          <div className="space-y-2">
+            <Label htmlFor="min_income">Reddito Min (€/mese)</Label>
+            <Input
+              id="min_income"
+              type="number"
+              placeholder="es. 3000"
+              value={filters.min_income || ''}
+              onChange={(e) => updateFilter('min_income', e.target.value ? Number(e.target.value) : undefined)}
+            />
+          </div>
+        </div>
+
+        {/* Secondary row for additional basic filters */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <div className="space-y-2">
             <Label htmlFor="has_children">Ha Figli</Label>
             <div className="flex items-center space-x-2 pt-2">
@@ -114,17 +169,6 @@ export function PersonFilters({ filters, onChange, onReset }: PersonFiltersProps
                 {filters.has_children ? 'Sì' : 'Qualsiasi'}
               </Label>
             </div>
-          </div>
-
-          <div className="space-y-2">
-            <Label htmlFor="min_income">Reddito Min (€/mese)</Label>
-            <Input
-              id="min_income"
-              type="number"
-              placeholder="es. 3000"
-              value={filters.min_income || ''}
-              onChange={(e) => updateFilter('min_income', e.target.value ? Number(e.target.value) : undefined)}
-            />
           </div>
         </div>
 
@@ -181,6 +225,44 @@ export function PersonFilters({ filters, onChange, onReset }: PersonFiltersProps
               <Label>Filtro Rapido</Label>
               <div className="flex flex-wrap gap-2">
                 <Button
+                  variant={filters.policy_temperature === 'hot' ? "default" : "outline"}
+                  size="sm"
+                  onClick={() => {
+                    onChange({
+                      ...filters,
+                      policy_temperature: 'hot'
+                    })
+                  }}
+                >
+                  🔥 Lead Caldissimi
+                </Button>
+                <Button
+                  variant={filters.hot_policy === 'prima_casa' ? "default" : "outline"}
+                  size="sm"
+                  onClick={() => {
+                    onChange({
+                      ...filters,
+                      hot_policy: 'prima_casa',
+                      policy_temperature: 'hot'
+                    })
+                  }}
+                >
+                  🏠 Prima Casa Hot
+                </Button>
+                <Button
+                  variant={filters.hot_policy === 'sport' ? "default" : "outline"}
+                  size="sm"
+                  onClick={() => {
+                    onChange({
+                      ...filters,
+                      hot_policy: 'sport',
+                      policy_temperature: 'hot'
+                    })
+                  }}
+                >
+                  ⚽ Sport Hot
+                </Button>
+                <Button
                   variant={filters.has_children && filters.min_income && filters.min_income >= 4000 ? "default" : "outline"}
                   size="sm"
                   onClick={() => {
@@ -207,19 +289,6 @@ export function PersonFilters({ filters, onChange, onReset }: PersonFiltersProps
                   }}
                 >
                   Professionisti Alto Rischio
-                </Button>
-                <Button
-                  variant={filters.opportunity_home_min && filters.opportunity_home_min >= 0.8 ? "default" : "outline"}
-                  size="sm"
-                  onClick={() => {
-                    onChange({
-                      ...filters,
-                      opportunity_home_min: 0.8,
-                      risk_home_min: 0.5
-                    })
-                  }}
-                >
-                  Opportunità Premium
                 </Button>
               </div>
             </div>

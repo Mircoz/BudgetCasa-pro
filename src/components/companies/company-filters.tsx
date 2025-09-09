@@ -105,14 +105,14 @@ export function CompanyFilters({ filters, onChange, onReset }: CompanyFiltersPro
           <div className="space-y-2">
             <Label htmlFor="city">Città</Label>
             <Select 
-              value={filters.city || ''} 
-              onValueChange={(value) => updateFilter('city', value || undefined)}
+              value={filters.city || 'all'} 
+              onValueChange={(value) => updateFilter('city', value === 'all' ? undefined : value)}
             >
               <SelectTrigger>
                 <SelectValue placeholder="Seleziona città" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="">Tutte le città</SelectItem>
+                <SelectItem value="all">Tutte le città</SelectItem>
                 {ITALIAN_CITIES.map((city) => (
                   <SelectItem key={city} value={city}>
                     {city}
@@ -125,14 +125,14 @@ export function CompanyFilters({ filters, onChange, onReset }: CompanyFiltersPro
           <div className="space-y-2">
             <Label htmlFor="ateco">Settore ATECO</Label>
             <Select 
-              value={filters.ateco || ''} 
-              onValueChange={(value) => updateFilter('ateco', value || undefined)}
+              value={filters.ateco || 'all'} 
+              onValueChange={(value) => updateFilter('ateco', value === 'all' ? undefined : value)}
             >
               <SelectTrigger>
                 <SelectValue placeholder="Seleziona settore" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="">Tutti i settori</SelectItem>
+                <SelectItem value="all">Tutti i settori</SelectItem>
                 {atecoOptions.map((option) => (
                   <SelectItem key={option.code} value={option.code}>
                     {option.code} - {option.label}
@@ -145,14 +145,14 @@ export function CompanyFilters({ filters, onChange, onReset }: CompanyFiltersPro
           <div className="space-y-2">
             <Label htmlFor="min_employees">Dipendenti Minimi</Label>
             <Select 
-              value={filters.min_employees?.toString() || ''} 
-              onValueChange={(value) => updateFilter('min_employees', value ? Number(value) : undefined)}
+              value={filters.min_employees?.toString() || 'all'} 
+              onValueChange={(value) => updateFilter('min_employees', value === 'all' ? undefined : Number(value))}
             >
               <SelectTrigger>
                 <SelectValue placeholder="Qualsiasi" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="">Qualsiasi</SelectItem>
+                <SelectItem value="all">Qualsiasi</SelectItem>
                 {EMPLOYEE_RANGES.map((range) => (
                   <SelectItem key={range.value} value={range.value.toString()}>
                     {range.label} dipendenti

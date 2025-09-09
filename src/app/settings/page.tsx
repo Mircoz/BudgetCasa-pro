@@ -44,6 +44,41 @@ export default function SettingsPage() {
         </p>
       </div>
 
+      {/* AI System Configuration */}
+      <Card className="bg-gradient-to-r from-purple-50 to-red-50 border-purple-200">
+        <CardHeader>
+          <CardTitle className="flex items-center text-purple-800">
+            🧠 AI EXTREMA - System Configuration
+          </CardTitle>
+          <CardDescription className="text-purple-600">
+            Configura i parametri avanzati del sistema di intelligenza artificiale
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-4">
+            <div className="text-center">
+              <div className="text-2xl font-bold text-green-600">94.7%</div>
+              <div className="text-xs text-gray-600">AI Accuracy</div>
+            </div>
+            <div className="text-center">
+              <div className="text-2xl font-bold text-blue-600">+€2.3M</div>
+              <div className="text-xs text-gray-600">Revenue Impact</div>
+            </div>
+            <div className="text-center">
+              <div className="text-2xl font-bold text-purple-600">18,340</div>
+              <div className="text-xs text-gray-600">Leads Processed</div>
+            </div>
+            <div className="text-center">
+              <div className="text-2xl font-bold text-red-600">87%</div>
+              <div className="text-xs text-gray-600">Market Control</div>
+            </div>
+          </div>
+          <Button className="w-full bg-gradient-to-r from-purple-600 to-red-600 hover:from-purple-700 hover:to-red-700 text-white">
+            🚀 ACTIVATE MAXIMUM AI DOMINATION
+          </Button>
+        </CardContent>
+      </Card>
+
       <div className="grid gap-6 md:grid-cols-2">
         {/* Profile Settings */}
         <Card>

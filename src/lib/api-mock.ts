@@ -84,12 +84,24 @@ const mockB2CLeads: B2BLeadFromB2C[] = [
 function convertB2CLeadToPersonCard(b2cLead: B2BLeadFromB2C): PersonCard {
   const insuranceScores = InsuranceLeadScorer.scoreInsuranceOpportunities(b2cLead)
   
+  // Determine hot policy based on B2C lead characteristics
+  let hot_policy: PersonCard['hot_policy'] = 'prima_casa'
+  if (b2cLead.intent_buy_home && b2cLead.budget_range) {
+    hot_policy = 'prima_casa'
+  } else if (b2cLead.lifestyle?.includes('sport')) {
+    hot_policy = 'sport'
+  } else if (b2cLead.mobility?.includes('car')) {
+    hot_policy = 'rc_auto'
+  }
+  
   return {
     id: b2cLead.id,
     name: b2cLead.name,
     geo_city: b2cLead.geo_city,
     lifestyle: b2cLead.lifestyle,
     mobility: b2cLead.mobility,
+    hot_policy,
+    policy_temperature: b2cLead.lead_temperature,
     scores: insuranceScores
   }
 }
@@ -105,6 +117,8 @@ const mockPersons: PersonCard[] = [
     geo_city: 'Milano',
     lifestyle: ['sport', 'travel'],
     mobility: ['car', 'bike'],
+    hot_policy: 'sport',
+    policy_temperature: 'hot',
     scores: {
       risk_home: 0.75,
       risk_mobility: 0.60,
@@ -118,6 +132,8 @@ const mockPersons: PersonCard[] = [
     geo_city: 'Roma',
     lifestyle: ['family', 'wellness'],
     mobility: ['car', 'public_transport'],
+    hot_policy: 'prima_casa',
+    policy_temperature: 'hot',
     scores: {
       risk_home: 0.65,
       risk_mobility: 0.45,
@@ -131,11 +147,43 @@ const mockPersons: PersonCard[] = [
     geo_city: 'Napoli',
     lifestyle: ['outdoor', 'family'],
     mobility: ['car'],
+    hot_policy: 'rc_auto',
+    policy_temperature: 'warm',
     scores: {
       risk_home: 0.80,
       risk_mobility: 0.70,
       opportunity_home: 0.75,
       opportunity_life: 0.65
+    }
+  },
+  {
+    id: '4',
+    name: 'Francesca Gallo', 
+    geo_city: 'Torino',
+    lifestyle: ['family', 'tech'],
+    mobility: ['car'],
+    hot_policy: 'cane',
+    policy_temperature: 'hot',
+    scores: {
+      risk_home: 0.55,
+      risk_mobility: 0.40,
+      opportunity_home: 0.75,
+      opportunity_life: 0.85
+    }
+  },
+  {
+    id: '5',
+    name: 'Alessandro Conti', 
+    geo_city: 'Firenze',
+    lifestyle: ['sport', 'outdoor'],
+    mobility: ['bike', 'car'],
+    hot_policy: 'infortuni',
+    policy_temperature: 'warm',
+    scores: {
+      risk_home: 0.60,
+      risk_mobility: 0.75,
+      opportunity_home: 0.65,
+      opportunity_life: 0.70
     }
   }
 ]
@@ -215,6 +263,14 @@ export async function searchPersons(filters: PersonFilters & { page?: number; pa
   
   if (filters.opportunity_home_min) {
     filteredPersons = filteredPersons.filter(p => (p.scores.opportunity_home || 0) >= filters.opportunity_home_min!)
+  }
+
+  if (filters.hot_policy) {
+    filteredPersons = filteredPersons.filter(p => p.hot_policy === filters.hot_policy)
+  }
+
+  if (filters.policy_temperature) {
+    filteredPersons = filteredPersons.filter(p => p.policy_temperature === filters.policy_temperature)
   }
   
   const page = filters.page || 1

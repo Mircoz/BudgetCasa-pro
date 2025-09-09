@@ -176,6 +176,128 @@ export default function LeadsPage() {
       </Card>
 
       {/* Filters */}
+      {/* AI Lead Hunter Dashboard */}
+      <Card className="bg-gradient-to-br from-purple-50 to-blue-50 border-purple-200 mb-6">
+        <CardHeader>
+          <CardTitle className="flex items-center text-purple-800">
+            🤖 AI LEAD HUNTER - Behavioral Intelligence
+          </CardTitle>
+          <div className="text-sm text-purple-600">
+            Machine Learning identifica lead con highest conversion probability in tempo reale
+          </div>
+        </CardHeader>
+        <CardContent>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+            {/* Disaster-Driven Leads */}
+            <div className="bg-red-100 p-4 rounded-lg border border-red-200">
+              <div className="flex items-center justify-between mb-2">
+                <span className="font-medium text-red-800 text-sm">🌪️ Disaster-Driven</span>
+                <Badge variant="destructive" className="text-xs">HOT</Badge>
+              </div>
+              <div className="text-2xl font-bold text-red-600 mb-1">127</div>
+              <div className="text-xs text-red-700 space-y-1">
+                <div>Emilia-Romagna flood zone residents</div>
+                <div>📈 Conversion: +340% vs normale</div>
+                <div>💰 Avg premium: €1,850</div>
+                <div>⏰ Strike window: 18 giorni left</div>
+              </div>
+            </div>
+
+            {/* AI Psychological Profiling */}
+            <div className="bg-purple-100 p-4 rounded-lg border border-purple-200">
+              <div className="flex items-center justify-between mb-2">
+                <span className="font-medium text-purple-800 text-sm">🧠 Psych Profiling</span>
+                <Badge className="bg-purple-100 text-purple-800 text-xs">ACTIVE</Badge>
+              </div>
+              <div className="text-2xl font-bold text-purple-600 mb-1">89</div>
+              <div className="text-xs text-purple-700 space-y-1">
+                <div>High anxiety personality traits</div>
+                <div>📊 Loss aversion trigger: 91%</div>
+                <div>🎯 Fear-based messaging optimal</div>
+                <div>💬 AI scripts generated: 34</div>
+              </div>
+            </div>
+
+            {/* Competitor Poaching */}
+            <div className="bg-blue-100 p-4 rounded-lg border border-blue-200">
+              <div className="flex items-center justify-between mb-2">
+                <span className="font-medium text-blue-800 text-sm">🎣 Competitor Poaching</span>
+                <Badge className="bg-blue-100 text-blue-800 text-xs">HUNTING</Badge>
+              </div>
+              <div className="text-2xl font-bold text-blue-600 mb-1">203</div>
+              <div className="text-xs text-blue-700 space-y-1">
+                <div>Generali clients dissatisfied</div>
+                <div>🔍 Social sentiment: negative</div>
+                <div>💰 Total LTV: €4.2M</div>
+                <div>🎯 Undercut pricing ready</div>
+              </div>
+            </div>
+          </div>
+
+          {/* AI-Generated Leads Today */}
+          <div className="bg-gradient-to-r from-green-50 to-emerald-50 p-4 rounded-lg border border-green-200">
+            <div className="flex items-center justify-between mb-3">
+              <span className="font-medium text-green-800">🚀 AI-Generated High-Value Leads Today</span>
+              <Badge className="bg-green-100 text-green-800">FRESH</Badge>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+              <div className="bg-white p-3 rounded border border-green-200">
+                <div className="flex justify-between items-center mb-2">
+                  <span className="font-medium text-sm">Marco Rossi</span>
+                  <Badge className="bg-red-100 text-red-800 text-xs">VOLCANIC</Badge>
+                </div>
+                <div className="text-xs space-y-1">
+                  <div>📍 Milano, zona alluvione risk +67%</div>
+                  <div>💰 Budget: €450K casa + €2.5K annual premium</div>
+                  <div>🧠 AI Trigger: "protezione famiglia"</div>
+                  <div>📞 Optimal call time: 19:30 (post-cena anxiety)</div>
+                  <div>🎯 Script: Fear-based + social proof neighbors</div>
+                </div>
+              </div>
+              <div className="bg-white p-3 rounded border border-green-200">
+                <div className="flex justify-between items-center mb-2">
+                  <span className="font-medium text-sm">Laura Bianchi</span>
+                  <Badge className="bg-orange-100 text-orange-800 text-xs">HOT</Badge>
+                </div>
+                <div className="text-xs space-y-1">
+                  <div>📍 Roma, ex-cliente Generali insoddisfatta</div>
+                  <div>💰 Previous premium: €1,200 → Our offer: €980</div>
+                  <div>🧠 AI Trigger: "risparmio" + "servizio migliore"</div>
+                  <div>📞 Best approach: WhatsApp + comparison table</div>
+                  <div>🎯 Script: Competitive advantage + testimonials</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* AI Behavioral Manipulation Tactics */}
+          <div className="mt-4 p-3 bg-yellow-50 rounded-lg border border-yellow-200">
+            <div className="flex items-center mb-2">
+              <Sparkles className="h-4 w-4 text-yellow-600 mr-2" />
+              <span className="font-medium text-yellow-800 text-sm">🎭 Active Behavioral Manipulation Tactics</span>
+            </div>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-2 text-xs">
+              <div className="flex items-center">
+                <div className="w-2 h-2 bg-red-500 rounded-full mr-2"></div>
+                <span>Fear Factor: 83% active</span>
+              </div>
+              <div className="flex items-center">
+                <div className="w-2 h-2 bg-blue-500 rounded-full mr-2"></div>
+                <span>Social Proof: 76% deployed</span>
+              </div>
+              <div className="flex items-center">
+                <div className="w-2 h-2 bg-green-500 rounded-full mr-2"></div>
+                <span>Scarcity Timer: 91% effective</span>
+              </div>
+              <div className="flex items-center">
+                <div className="w-2 h-2 bg-purple-500 rounded-full mr-2"></div>
+                <span>Authority Proof: 87% trust</span>
+              </div>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+
       <PersonFilters
         filters={filters}
         onChange={handleFiltersChange}

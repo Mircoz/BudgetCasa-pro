@@ -176,6 +176,124 @@ export default function CompaniesPage() {
       </Card>
 
       {/* Filters */}
+      {/* AI-Powered Growth Companies Ranking */}
+      <Card className="bg-gradient-to-r from-green-50 to-emerald-50 border-green-200 mb-6">
+        <CardHeader>
+          <CardTitle className="flex items-center text-green-700">
+            📈 AI GROWTH COMPANIES RANKING
+          </CardTitle>
+          <div className="text-sm text-green-600">
+            Aziende in rapida crescita identificate da ML algorithms - Filtrabili per regione
+          </div>
+        </CardHeader>
+        <CardContent>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+            <Select defaultValue="all-regions">
+              <SelectTrigger>
+                <SelectValue placeholder="Filtra per Regione" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all-regions">🌍 Tutte le Regioni</SelectItem>
+                <SelectItem value="lombardia">🏭 Lombardia</SelectItem>
+                <SelectItem value="lazio">🏛️ Lazio</SelectItem>
+                <SelectItem value="veneto">🚢 Veneto</SelectItem>
+                <SelectItem value="emilia-romagna">🍝 Emilia-Romagna</SelectItem>
+                <SelectItem value="piemonte">🏔️ Piemonte</SelectItem>
+                <SelectItem value="toscana">🍷 Toscana</SelectItem>
+              </SelectContent>
+            </Select>
+            
+            <Select defaultValue="all-provinces">
+              <SelectTrigger>
+                <SelectValue placeholder="Filtra per Provincia" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all-provinces">🏙️ Tutte le Province</SelectItem>
+                <SelectItem value="milano">Milano</SelectItem>
+                <SelectItem value="roma">Roma</SelectItem>
+                <SelectItem value="torino">Torino</SelectItem>
+                <SelectItem value="napoli">Napoli</SelectItem>
+                <SelectItem value="bologna">Bologna</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            {/* Top Growing Company 1 */}
+            <div className="bg-white p-4 rounded-lg border border-green-200">
+              <div className="flex items-center justify-between mb-2">
+                <div className="flex items-center">
+                  <div className="w-8 h-8 bg-yellow-500 rounded-full flex items-center justify-center text-white font-bold text-sm mr-2">1</div>
+                  <span className="font-medium">TechCorp Milano</span>
+                </div>
+                <Badge className="bg-green-100 text-green-800">+847%</Badge>
+              </div>
+              <div className="text-xs space-y-1 text-gray-600">
+                <div>💰 Fatturato: €12.5M → €118.4M</div>
+                <div>👥 Dipendenti: 25 → 340</div>
+                <div>🎯 Settore: Software Development</div>
+                <div>📍 Milano, Lombardia</div>
+                <div className="flex items-center mt-2">
+                  <div className="text-xs text-green-700 font-medium">🚀 AI Score: 94/100</div>
+                </div>
+              </div>
+            </div>
+
+            {/* Top Growing Company 2 */}
+            <div className="bg-white p-4 rounded-lg border border-green-200">
+              <div className="flex items-center justify-between mb-2">
+                <div className="flex items-center">
+                  <div className="w-8 h-8 bg-gray-400 rounded-full flex items-center justify-center text-white font-bold text-sm mr-2">2</div>
+                  <span className="font-medium">BioMed Ventures</span>
+                </div>
+                <Badge className="bg-green-100 text-green-800">+523%</Badge>
+              </div>
+              <div className="text-xs space-y-1 text-gray-600">
+                <div>💰 Fatturato: €8.2M → €51.1M</div>
+                <div>👥 Dipendenti: 18 → 156</div>
+                <div>🎯 Settore: Biotecnologie</div>
+                <div>📍 Roma, Lazio</div>
+                <div className="flex items-center mt-2">
+                  <div className="text-xs text-green-700 font-medium">🚀 AI Score: 89/100</div>
+                </div>
+              </div>
+            </div>
+
+            {/* Top Growing Company 3 */}
+            <div className="bg-white p-4 rounded-lg border border-green-200">
+              <div className="flex items-center justify-between mb-2">
+                <div className="flex items-center">
+                  <div className="w-8 h-8 bg-orange-500 rounded-full flex items-center justify-center text-white font-bold text-sm mr-2">3</div>
+                  <span className="font-medium">Green Energy Spa</span>
+                </div>
+                <Badge className="bg-green-100 text-green-800">+412%</Badge>
+              </div>
+              <div className="text-xs space-y-1 text-gray-600">
+                <div>💰 Fatturato: €15.3M → €78.3M</div>
+                <div>👥 Dipendenti: 45 → 289</div>
+                <div>🎯 Settore: Energie Rinnovabili</div>
+                <div>📍 Torino, Piemonte</div>
+                <div className="flex items-center mt-2">
+                  <div className="text-xs text-green-700 font-medium">🚀 AI Score: 87/100</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div className="mt-4 p-3 bg-yellow-50 rounded-lg border border-yellow-200">
+            <div className="flex items-center mb-2">
+              <Sparkles className="h-4 w-4 text-yellow-600 mr-2" />
+              <span className="font-medium text-yellow-800 text-sm">💡 AI Intelligence Report</span>
+            </div>
+            <div className="text-xs text-yellow-700 space-y-1">
+              <div>• <strong>TechCorp Milano</strong>: Acquisizioni strategiche + espansione EU = polizze business premium €2.3M potential</div>
+              <div>• <strong>BioMed Ventures</strong>: IPO planned 2025 = copertura D&O directors €1.8M opportunity</div>
+              <div>• <strong>Green Energy</strong>: Nuovi impianti = polizze property/construction €3.2M market</div>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+
       <CompanyFilters
         filters={filters}
         onChange={handleFiltersChange}

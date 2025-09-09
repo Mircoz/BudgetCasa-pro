@@ -235,31 +235,69 @@ export default function DashboardPage() {
           </CardContent>
         </Card>
 
-        {/* Quick Actions */}
-        <Card>
+        {/* AI-Powered Alerts & Quick Actions */}
+        <Card className="bg-gradient-to-br from-purple-50 to-red-50 border-purple-200">
           <CardHeader>
-            <CardTitle>Azioni Rapide</CardTitle>
+            <CardTitle className="flex items-center text-purple-800">
+              🚨 AI ALERTS & AZIONI RAPIDE
+            </CardTitle>
             <CardDescription>
-              Operazioni comuni per velocizzare il tuo lavoro
+              Intelligence AI in tempo reale + operazioni per dominare il mercato
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-3">
-            <Button className="w-full justify-start" asChild>
+            {/* AI Disaster Alert */}
+            <div className="bg-red-100 p-3 rounded-lg border border-red-200 mb-4">
+              <div className="flex items-center justify-between mb-2">
+                <span className="font-medium text-red-800 text-sm">🌪️ DISASTER AI ALERT</span>
+                <Badge variant="destructive" className="text-xs">URGENT</Badge>
+              </div>
+              <p className="text-xs text-red-700 mb-2">
+                Emilia-Romagna: 78% probabilità alluvione prossimi 30gg
+              </p>
+              <div className="flex justify-between text-xs">
+                <span>💰 €8.5M opportunity</span>
+                <span>⏰ 45 giorni window</span>
+              </div>
+            </div>
+
+            {/* AI Competitor Alert */}
+            <div className="bg-blue-100 p-3 rounded-lg border border-blue-200 mb-4">
+              <div className="flex items-center justify-between mb-2">
+                <span className="font-medium text-blue-800 text-sm">🎯 COMPETITOR AI INTEL</span>
+                <Badge className="bg-blue-100 text-blue-800 text-xs">HOT</Badge>
+              </div>
+              <p className="text-xs text-blue-700 mb-2">
+                1,250 clienti Generali insoddisfatti identificati via AI
+              </p>
+              <div className="flex justify-between text-xs">
+                <span>💰 €3.2M poaching potential</span>
+                <span>📊 91% success rate</span>
+              </div>
+            </div>
+
+            <Button className="w-full justify-start bg-purple-600 hover:bg-purple-700 text-white" asChild>
               <Link href="/leads">
                 <Users className="mr-2 h-4 w-4" />
-                Cerca Lead Persone
+                🤖 AI Lead Hunter
               </Link>
             </Button>
-            <Button className="w-full justify-start" variant="outline" asChild>
+            <Button className="w-full justify-start bg-red-600 hover:bg-red-700 text-white" asChild>
               <Link href="/companies">
                 <Building className="mr-2 h-4 w-4" />
-                Directory Aziende
+                📈 Growth Companies Ranking
+              </Link>
+            </Button>
+            <Button className="w-full justify-start bg-blue-600 hover:bg-blue-700 text-white" asChild>
+              <Link href="/insights">
+                <TrendingUp className="mr-2 h-4 w-4" />
+                🧠 AI Extrema Intelligence
               </Link>
             </Button>
             <Button className="w-full justify-start" variant="outline" asChild>
               <Link href="/lists">
                 <Plus className="mr-2 h-4 w-4" />
-                Nuova Lista
+                Nuova Lista Targeting
               </Link>
             </Button>
           </CardContent>
