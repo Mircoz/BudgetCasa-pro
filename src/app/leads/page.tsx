@@ -18,7 +18,7 @@ import {
   Sparkles,
   Loader2
 } from 'lucide-react'
-import { searchPersons, getLeadSuggestions, getLists, addToList, createList, trackEvent } from '@/lib/api'
+import { searchPersons, getLeadSuggestions, getLists, addToList, createList, trackEvent } from '@/lib/api-mock'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import type { PersonCard as PersonCardType, PersonFilters as PersonFiltersType, PolicySuggestion } from '@/lib/types'
 import { POLICY_LABELS } from '@/lib/types'

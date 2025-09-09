@@ -20,8 +20,7 @@ import {
   Loader2,
   FileText
 } from 'lucide-react'
-import { getLists, createList, exportListToCSV, trackEvent } from '@/lib/api'
-import { createClient } from '@/lib/supabase'
+import { getLists, createList, exportListToCSV, trackEvent } from '@/lib/api-mock'
 import type { List } from '@/lib/types'
 
 export default function ListsPage() {
@@ -42,19 +41,11 @@ export default function ListsPage() {
       const userLists = await getLists()
       setLists(userLists)
       
-      // Get counts for each list
-      const supabase = createClient()
+      // Mock counts for each list
       const counts: Record<string, number> = {}
-      
       for (const list of userLists) {
-        const { count } = await supabase
-          .from('list_items')
-          .select('id', { count: 'exact' })
-          .eq('list_id', list.id)
-        
-        counts[list.id] = count || 0
+        counts[list.id] = Math.floor(Math.random() * 20) + 1 // Mock count between 1-20
       }
-      
       setListCounts(counts)
     } catch (error) {
       console.error('Load lists error:', error)
@@ -102,8 +93,7 @@ export default function ListsPage() {
     if (!confirm('Sei sicuro di voler eliminare questa lista?')) return
 
     try {
-      const supabase = createClient()
-      await supabase.from('lists').delete().eq('id', listId)
+      // Mock delete - in reality would delete from Supabase
       loadLists() // Reload lists
     } catch (error) {
       console.error('Delete list error:', error)
