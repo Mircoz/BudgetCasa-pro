@@ -24,6 +24,7 @@ export interface CompanyCard {
     risk_crime?: number
     risk_business_continuity?: number
     opportunity_property?: number
+    opportunity_employee_benefits?: number
   }
 }
 
