@@ -25,6 +25,7 @@ import { getLeadSuggestions, getLists, addToList, createList, trackEvent } from 
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
+import { ExportDialog } from '@/components/export/export-dialog'
 import type { PolicySuggestion } from '@/lib/types'
 import type { MilanoCompany, CompanySearchFilters } from '@/lib/supabase-companies-api'
 import { POLICY_LABELS } from '@/lib/types'
@@ -166,6 +167,7 @@ export default function CompaniesPage() {
               {totalResults} aziende
             </Badge>
           )}
+          <ExportDialog defaultType="companies" />
         </div>
       </div>
 

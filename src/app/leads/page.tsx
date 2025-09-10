@@ -11,6 +11,7 @@ import { PersonCard } from '@/components/leads/person-card'
 import { PersonFilters } from '@/components/leads/person-filters'
 import { LeadsViewToggle } from '@/components/leads/leads-view-toggle'
 import { Badge } from '@/components/ui/badge'
+import { ExportDialog } from '@/components/export/export-dialog'
 import { 
   ChevronLeft, 
   ChevronRight,
@@ -198,6 +199,7 @@ export default function LeadsPage() {
               {totalResults} risultati filtrati
             </Badge>
           )}
+          <ExportDialog defaultType="leads" />
         </div>
       </div>
 
