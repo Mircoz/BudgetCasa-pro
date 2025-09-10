@@ -8,7 +8,6 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog'
 import { SearchInput } from '@/components/ui/search-input'
 import { CompanyCard } from '@/components/companies/company-card'
-import { CompanyFilters } from '@/components/companies/company-filters'
 import { CompaniesViewToggle } from '@/components/companies/companies-view-toggle'
 import { Badge } from '@/components/ui/badge'
 import { 
