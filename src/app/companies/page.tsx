@@ -9,6 +9,7 @@ import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } f
 import { SearchInput } from '@/components/ui/search-input'
 import { CompanyCard } from '@/components/companies/company-card'
 import { CompanyFilters } from '@/components/companies/company-filters'
+import { CompaniesViewToggle } from '@/components/companies/companies-view-toggle'
 import { Badge } from '@/components/ui/badge'
 import { 
   ChevronLeft, 
@@ -312,16 +313,45 @@ export default function CompaniesPage() {
         </Card>
       ) : companies.length > 0 ? (
         <>
-          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-            {companies.map((company) => (
-              <CompanyCard
-                key={company.id}
-                company={company}
-                onViewSuggestions={() => handleViewSuggestions(company)}
-                onAddToList={() => handleAddToList(company)}
-              />
-            ))}
-          </div>
+          <CompaniesViewToggle
+            companies={companies.map(company => ({
+              ...company,
+              leadScore: Math.floor(Math.random() * 40) + 60, // 60-100
+              revenueOpportunity: Math.floor(Math.random() * 50000) + 25000, // €25K-75K
+              nextAction: [
+                'Schedule Corporate Meeting',
+                'Send B2B Proposal', 
+                'Call Decision Maker',
+                'Email Risk Assessment',
+                'Present Insurance Portfolio'
+              ][Math.floor(Math.random() * 5)],
+              urgencyLevel: (['high', 'medium', 'low'] as const)[Math.floor(Math.random() * 3)],
+              contactPerson: [
+                'CFO Marco Rossi',
+                'CEO Laura Bianchi', 
+                'Risk Manager Giuseppe Verdi',
+                'HR Director Anna Ferrari',
+                'Operations Manager Paolo Conti'
+              ][Math.floor(Math.random() * 5)],
+              contactEmail: `contact@${company.name.toLowerCase().replace(/\s+/g, '')}.com`,
+              industrySegment: [
+                'technology', 'finance', 'manufacturing', 'retail', 'healthcare', 'consulting'
+              ][Math.floor(Math.random() * 6)],
+              businessValue: Math.floor(Math.random() * 200000) + 50000, // €50K-250K
+              conversionProbability: Math.floor(Math.random() * 30) + 40 // 40-70%
+            }))}
+            onCompanySelect={(companyIds) => {
+              console.log('Selected companies:', companyIds);
+            }}
+            onCompanyAction={(companyId, action) => {
+              const company = companies.find(c => c.id === companyId);
+              if (action === 'call' || action === 'email') {
+                console.log(`${action} action for ${company?.name}`);
+              } else if (action === 'schedule') {
+                console.log(`Schedule meeting with ${company?.name}`);
+              }
+            }}
+          />
 
           {/* Pagination */}
           {totalPages > 1 && (

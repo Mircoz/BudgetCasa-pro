@@ -9,6 +9,7 @@ import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } f
 import { SearchInput } from '@/components/ui/search-input'
 import { PersonCard } from '@/components/leads/person-card'
 import { PersonFilters } from '@/components/leads/person-filters'
+import { LeadsViewToggle } from '@/components/leads/leads-view-toggle'
 import { Badge } from '@/components/ui/badge'
 import { 
   ChevronLeft, 
@@ -316,16 +317,34 @@ export default function LeadsPage() {
         </Card>
       ) : persons.length > 0 ? (
         <>
-          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-            {persons.map((person) => (
-              <PersonCard
-                key={person.id}
-                person={person}
-                onViewSuggestions={() => handleViewSuggestions(person)}
-                onAddToList={() => handleAddToList(person)}
-              />
-            ))}
-          </div>
+          <LeadsViewToggle
+            leads={persons.map(person => ({
+              ...person,
+              leadScore: Math.floor(Math.random() * 40) + 60, // 60-100
+              revenueOpportunity: Math.floor(Math.random() * 3000) + 1000, // €1000-4000
+              nextAction: [
+                'Call Now - High Priority',
+                'Send Personal Email', 
+                'Schedule Consultation',
+                'WhatsApp Contact',
+                'Send Proposal'
+              ][Math.floor(Math.random() * 5)],
+              urgencyLevel: (['high', 'medium', 'low'] as const)[Math.floor(Math.random() * 3)],
+              policyInterests: ['casa', 'auto', 'vita', 'salute'].slice(0, Math.floor(Math.random() * 3) + 1),
+              conversionProbability: Math.floor(Math.random() * 40) + 45 // 45-85%
+            }))}
+            onLeadSelect={(leadIds) => {
+              console.log('Selected leads:', leadIds);
+            }}
+            onLeadAction={(leadId, action) => {
+              const person = persons.find(p => p.id === leadId);
+              if (action === 'call' || action === 'email') {
+                console.log(`${action} action for ${person?.name}`);
+              } else if (action === 'schedule') {
+                console.log(`Schedule meeting with ${person?.name}`);
+              }
+            }}
+          />
 
           {/* Pagination */}
           {totalPages > 1 && (
