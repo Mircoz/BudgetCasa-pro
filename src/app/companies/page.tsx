@@ -17,19 +17,25 @@ import {
   Building,
   BookmarkPlus,
   Sparkles,
-  Loader2
+  Loader2,
+  Filter,
+  X
 } from 'lucide-react'
-import { searchCompanies, getLeadSuggestions, getLists, addToList, createList, trackEvent } from '@/lib/api-mock'
+import { searchMilanoCompanies, getCompanyStats } from '@/lib/supabase-companies-api'
+import { getLeadSuggestions, getLists, addToList, createList, trackEvent } from '@/lib/api-mock'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
-import type { CompanyCard as CompanyCardType, CompanyFilters as CompanyFiltersType, PolicySuggestion } from '@/lib/types'
+import { Input } from '@/components/ui/input'
+import { Label } from '@/components/ui/label'
+import type { PolicySuggestion } from '@/lib/types'
+import type { MilanoCompany, CompanySearchFilters } from '@/lib/supabase-companies-api'
 import { POLICY_LABELS } from '@/lib/types'
 
-const INITIAL_FILTERS: CompanyFiltersType = {}
+const INITIAL_FILTERS: CompanySearchFilters = {}
 
 export default function CompaniesPage() {
-  const [companies, setCompanies] = useState<CompanyCardType[]>([])
+  const [companies, setCompanies] = useState<MilanoCompany[]>([])
   const [loading, setLoading] = useState(false)
-  const [filters, setFilters] = useState<CompanyFiltersType>(INITIAL_FILTERS)
+  const [filters, setFilters] = useState<CompanySearchFilters>(INITIAL_FILTERS)
   const [searchQuery, setSearchQuery] = useState('')
   const [currentPage, setCurrentPage] = useState(1)
   const [totalPages, setTotalPages] = useState(1)
@@ -37,7 +43,7 @@ export default function CompaniesPage() {
 
   // Suggestions dialog
   const [suggestionsOpen, setSuggestionsOpen] = useState(false)
-  const [selectedCompany, setSelectedCompany] = useState<CompanyCardType | null>(null)
+  const [selectedCompany, setSelectedCompany] = useState<MilanoCompany | null>(null)
   const [suggestions, setSuggestions] = useState<PolicySuggestion[]>([])
   const [suggestionsLoading, setSuggestionsLoading] = useState(false)
 
@@ -59,7 +65,7 @@ export default function CompaniesPage() {
         page_size: pageSize
       }
 
-      const response = await searchCompanies(searchFilters)
+      const response = await searchMilanoCompanies(searchFilters)
       setCompanies(response.items)
       setCurrentPage(response.page)
       setTotalPages(response.total_pages)
@@ -68,8 +74,8 @@ export default function CompaniesPage() {
       // Track search event
       trackEvent('pro_search_company', {
         q: searchQuery,
-        city: filters.city,
-        ateco: filters.ateco,
+        zona: filters.zona,
+        industry: filters.industry,
         min_employees: filters.min_employees,
         results: response.total
       })
@@ -84,12 +90,12 @@ export default function CompaniesPage() {
     performSearch(1)
   }, [filters, searchQuery])
 
-  const handleFiltersChange = (newFilters: CompanyFiltersType) => {
+  const handleFiltersChange = (newFilters: CompanySearchFilters) => {
     setFilters(newFilters)
     setCurrentPage(1)
   }
 
-  const handleViewSuggestions = async (company: CompanyCardType) => {
+  const handleViewSuggestions = async (company: MilanoCompany) => {
     setSelectedCompany(company)
     setSuggestionsOpen(true)
     setSuggestionsLoading(true)
@@ -107,7 +113,7 @@ export default function CompaniesPage() {
     }
   }
 
-  const handleAddToList = async (company: CompanyCardType) => {
+  const handleAddToList = async (company: MilanoCompany) => {
     setSelectedCompany(company)
     
     try {
@@ -295,11 +301,99 @@ export default function CompaniesPage() {
         </CardContent>
       </Card>
 
-      <CompanyFilters
-        filters={filters}
-        onChange={handleFiltersChange}
-        onReset={() => setFilters(INITIAL_FILTERS)}
-      />
+      {/* Note: CompanyFilters component needs to be updated to work with CompanySearchFilters */}
+      <Card>
+        <CardHeader>
+          <CardTitle className="flex items-center">
+            <Filter className="h-5 w-5 mr-2" />
+            Filtri Ricerca
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+            <div>
+              <Label htmlFor="zona">Zona Milano</Label>
+              <Select value={filters.zona || ''} onValueChange={(value) => handleFiltersChange({ ...filters, zona: value || undefined })}>
+                <SelectTrigger>
+                  <SelectValue placeholder="Tutte le zone" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="">Tutte le zone</SelectItem>
+                  <SelectItem value="Centro">Centro</SelectItem>
+                  <SelectItem value="Navigli">Navigli</SelectItem>
+                  <SelectItem value="Porta Nuova">Porta Nuova</SelectItem>
+                  <SelectItem value="Provincia">Provincia</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+            
+            <div>
+              <Label htmlFor="industry">Settore</Label>
+              <Select value={filters.industry || ''} onValueChange={(value) => handleFiltersChange({ ...filters, industry: value || undefined })}>
+                <SelectTrigger>
+                  <SelectValue placeholder="Tutti i settori" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="">Tutti i settori</SelectItem>
+                  <SelectItem value="Legal Services">Servizi Legali</SelectItem>
+                  <SelectItem value="Accounting & Finance">Contabilità</SelectItem>
+                  <SelectItem value="Architecture & Engineering">Architettura</SelectItem>
+                  <SelectItem value="Healthcare">Sanità</SelectItem>
+                  <SelectItem value="Business Consulting">Consulenza</SelectItem>
+                  <SelectItem value="Technology">Tecnologia</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+            
+            <div>
+              <Label htmlFor="min_employees">Min. Dipendenti</Label>
+              <Input
+                id="min_employees"
+                type="number"
+                placeholder="es. 5"
+                value={filters.min_employees || ''}
+                onChange={(e) => handleFiltersChange({ 
+                  ...filters, 
+                  min_employees: e.target.value ? parseInt(e.target.value) : undefined 
+                })}
+              />
+            </div>
+            
+            <div>
+              <Label htmlFor="min_revenue">Min. Fatturato (€)</Label>
+              <Input
+                id="min_revenue"
+                type="number"
+                placeholder="es. 100000"
+                value={filters.min_revenue || ''}
+                onChange={(e) => handleFiltersChange({ 
+                  ...filters, 
+                  min_revenue: e.target.value ? parseInt(e.target.value) : undefined 
+                })}
+              />
+            </div>
+          </div>
+          
+          <div className="flex justify-between items-center mt-4">
+            <Button 
+              variant="outline" 
+              onClick={() => setFilters(INITIAL_FILTERS)}
+              className="flex items-center"
+            >
+              <X className="h-4 w-4 mr-2" />
+              Reset Filtri
+            </Button>
+            
+            <div className="flex items-center space-x-2">
+              {Object.values(filters).some(v => v !== undefined) && (
+                <Badge variant="secondary">
+                  Filtri attivi: {Object.values(filters).filter(v => v !== undefined).length}
+                </Badge>
+              )}
+            </div>
+          </div>
+        </CardContent>
+      </Card>
 
       {/* Results */}
       {loading ? (
@@ -315,30 +409,25 @@ export default function CompaniesPage() {
         <>
           <CompaniesViewToggle
             companies={companies.map(company => ({
-              ...company,
-              leadScore: Math.floor(Math.random() * 40) + 60, // 60-100
-              revenueOpportunity: Math.floor(Math.random() * 50000) + 25000, // €25K-75K
-              nextAction: [
-                'Schedule Corporate Meeting',
-                'Send B2B Proposal', 
-                'Call Decision Maker',
-                'Email Risk Assessment',
-                'Present Insurance Portfolio'
-              ][Math.floor(Math.random() * 5)],
-              urgencyLevel: (['high', 'medium', 'low'] as const)[Math.floor(Math.random() * 3)],
-              contactPerson: [
-                'CFO Marco Rossi',
-                'CEO Laura Bianchi', 
-                'Risk Manager Giuseppe Verdi',
-                'HR Director Anna Ferrari',
-                'Operations Manager Paolo Conti'
-              ][Math.floor(Math.random() * 5)],
-              contactEmail: `contact@${company.name.toLowerCase().replace(/\s+/g, '')}.com`,
-              industrySegment: [
-                'technology', 'finance', 'manufacturing', 'retail', 'healthcare', 'consulting'
-              ][Math.floor(Math.random() * 6)],
-              businessValue: Math.floor(Math.random() * 200000) + 50000, // €50K-250K
-              conversionProbability: Math.floor(Math.random() * 30) + 40 // 40-70%
+              id: company.id,
+              name: company.name,
+              industry: company.industry,
+              employees: company.employees,
+              revenue: company.revenue,
+              city: company.city,
+              address: company.address,
+              phone: company.phone,
+              email: company.email || undefined,
+              website: company.website || undefined,
+              leadScore: company.leadScore,
+              revenueOpportunity: company.revenueOpportunity,
+              nextAction: company.nextAction,
+              urgencyLevel: company.urgencyLevel,
+              contactPerson: company.contactPerson,
+              contactEmail: company.email || `contact@${company.name.toLowerCase().replace(/\s+/g, '').replace(/[^a-z0-9]/g, '')}.com`,
+              industrySegment: company.sector.toLowerCase().replace(/\s+/g, '_'),
+              businessValue: company.businessValue,
+              conversionProbability: company.conversionProbability
             }))}
             onCompanySelect={(companyIds) => {
               console.log('Selected companies:', companyIds);
