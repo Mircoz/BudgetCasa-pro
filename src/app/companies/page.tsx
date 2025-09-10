@@ -312,12 +312,12 @@ export default function CompaniesPage() {
           <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
             <div>
               <Label htmlFor="zona">Zona Milano</Label>
-              <Select value={filters.zona || ''} onValueChange={(value) => handleFiltersChange({ ...filters, zona: value || undefined })}>
+              <Select value={filters.zona || 'all'} onValueChange={(value) => handleFiltersChange({ ...filters, zona: value === 'all' ? undefined : value })}>
                 <SelectTrigger>
                   <SelectValue placeholder="Tutte le zone" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="">Tutte le zone</SelectItem>
+                  <SelectItem value="all">Tutte le zone</SelectItem>
                   <SelectItem value="Centro">Centro</SelectItem>
                   <SelectItem value="Navigli">Navigli</SelectItem>
                   <SelectItem value="Porta Nuova">Porta Nuova</SelectItem>
@@ -328,12 +328,12 @@ export default function CompaniesPage() {
             
             <div>
               <Label htmlFor="industry">Settore</Label>
-              <Select value={filters.industry || ''} onValueChange={(value) => handleFiltersChange({ ...filters, industry: value || undefined })}>
+              <Select value={filters.industry || 'all'} onValueChange={(value) => handleFiltersChange({ ...filters, industry: value === 'all' ? undefined : value })}>
                 <SelectTrigger>
                   <SelectValue placeholder="Tutti i settori" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="">Tutti i settori</SelectItem>
+                  <SelectItem value="all">Tutti i settori</SelectItem>
                   <SelectItem value="Legal Services">Servizi Legali</SelectItem>
                   <SelectItem value="Accounting & Finance">Contabilità</SelectItem>
                   <SelectItem value="Architecture & Engineering">Architettura</SelectItem>
