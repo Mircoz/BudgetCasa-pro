@@ -15,7 +15,7 @@ import {
 } from 'lucide-react'
 import Link from 'next/link'
 
-import { getB2CAnalytics, getB2CLeads } from '@/lib/api-mock'
+import { getDashboardStats } from '@/lib/dashboard-stats-api'
 import { useState, useEffect } from 'react'
 
 // Mock data for demonstration
@@ -78,19 +78,14 @@ const suggestedLeads = [
 ]
 
 export default function DashboardPage() {
-  const [b2cAnalytics, setB2cAnalytics] = useState<any>(null)
-  const [hotB2cLeads, setHotB2cLeads] = useState<any[]>([])
+  const [dashboardStats, setDashboardStats] = useState<any>(null)
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
     const loadDashboardData = async () => {
       try {
-        const [analytics, hotLeads] = await Promise.all([
-          getB2CAnalytics(),
-          getB2CLeads({ temperature: 'hot', maxDaysOld: 7 })
-        ])
-        setB2cAnalytics(analytics)
-        setHotB2cLeads(hotLeads.slice(0, 5))
+        const stats = await getDashboardStats()
+        setDashboardStats(stats)
       } catch (error) {
         console.error('Error loading dashboard data:', error)
       } finally {
@@ -118,25 +113,25 @@ export default function DashboardPage() {
     <div className="space-y-6">
       {/* Header */}
       <div className="border-b pb-4">
-        <h1 className="text-3xl font-bold tracking-tight">Dashboard</h1>
+        <h1 className="text-3xl font-bold tracking-tight">Dashboard Milano</h1>
         <p className="text-muted-foreground">
-          Lead qualificati da BudgetCasa.it e analytics assicurative.
+          {dashboardStats?.totalLeads || 0} lead professionali raccolti da Milano con business intelligence B2B
         </p>
       </div>
 
-      {/* B2C Analytics KPIs */}
+      {/* Milano Real Statistics KPIs */}
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">
-              Lead B2C Totali
+              Lead Milano Totali
             </CardTitle>
             <Users className="h-4 w-4 text-blue-600" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{b2cAnalytics?.totalLeads}</div>
+            <div className="text-2xl font-bold">{dashboardStats?.totalLeads || 0}</div>
             <p className="text-xs text-muted-foreground">
-              Da simulazioni BudgetCasa.it
+              Professionali raccolti via scraping
             </p>
           </CardContent>
         </Card>
@@ -144,14 +139,14 @@ export default function DashboardPage() {
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">
-              Lead Caldi
+              Lead Alta Qualità
             </CardTitle>
             <TrendingUp className="h-4 w-4 text-red-500" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-red-600">{b2cAnalytics?.hotLeads}</div>
+            <div className="text-2xl font-bold text-red-600">{dashboardStats?.highQualityLeads || 0}</div>
             <p className="text-xs text-muted-foreground">
-              Attività recente alta
+              Score qualità ≥80
             </p>
           </CardContent>
         </Card>
@@ -159,14 +154,14 @@ export default function DashboardPage() {
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">
-              Valore Stimato
+              Revenue Opportunity
             </CardTitle>
             <TrendingUp className="h-4 w-4 text-green-600" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">€{(b2cAnalytics?.conversionFunnel.estimatedValue / 1000).toFixed(0)}K</div>
+            <div className="text-2xl font-bold">€{Math.floor((dashboardStats?.totalRevenueOpportunity || 0) / 1000)}K</div>
             <p className="text-xs text-muted-foreground">
-              Commissioni potenziali
+              Potenziale premi B2B
             </p>
           </CardContent>
         </Card>
@@ -174,25 +169,25 @@ export default function DashboardPage() {
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">
-              Engagement Score
+              Tasso Arricchimento
             </CardTitle>
             <MapPin className="h-4 w-4 text-purple-600" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{b2cAnalytics?.avgEngagementScore}/100</div>
+            <div className="text-2xl font-bold">{dashboardStats?.enrichmentRate || 0}%</div>
             <p className="text-xs text-muted-foreground">
-              Qualità media lead
+              Dati verificati e completati
             </p>
           </CardContent>
         </Card>
       </div>
 
       <div className="grid gap-6 md:grid-cols-2">
-        {/* Hot B2C Leads */}
+        {/* Lead Milano Alta Qualità */}
         <Card>
           <CardHeader>
             <CardTitle className="flex items-center justify-between">
-              🔥 Lead Caldi da BudgetCasa.it
+              🔥 Lead Milano Alta Qualità
               <Button variant="outline" size="sm" asChild>
                 <Link href="/leads">
                   <Plus className="mr-2 h-4 w-4" />
@@ -201,30 +196,30 @@ export default function DashboardPage() {
               </Button>
             </CardTitle>
             <CardDescription>
-              Utenti con alta attività recente e budget elevato
+              Professionisti milanesi con alto potenziale business
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
-            {hotB2cLeads.map((lead) => (
+            {(dashboardStats?.recentLeads || []).map((lead) => (
               <div
                 key={lead.id}
                 className="flex items-center justify-between p-3 rounded-lg border bg-red-50"
               >
                 <div className="flex items-center space-x-3">
-                  <Users className="h-5 w-5 text-red-600" />
+                  <Building className="h-5 w-5 text-red-600" />
                   <div>
                     <p className="font-medium">{lead.name}</p>
                     <p className="text-sm text-muted-foreground">
-                      {lead.geo_city} • Budget {lead.budget_range} • {lead.simulation_count} simulazioni
+                      {lead.zona} • {lead.industry}
                     </p>
                     <p className="text-xs text-red-600">
-                      🏠 {lead.favorite_neighborhoods[0]} • 📅 {new Date(lead.last_simulation_date).toLocaleDateString('it-IT')}
+                      📅 {new Date(lead.createdAt).toLocaleDateString('it-IT')}
                     </p>
                   </div>
                 </div>
                 <div className="flex items-center space-x-2">
                   <Badge variant="destructive">
-                    {lead.b2c_engagement_score}/100
+                    {lead.leadScore}/100
                   </Badge>
                   <Button variant="ghost" size="sm">
                     <ArrowRight className="h-4 w-4" />
@@ -232,6 +227,12 @@ export default function DashboardPage() {
                 </div>
               </div>
             ))}
+            {(!dashboardStats?.recentLeads || dashboardStats.recentLeads.length === 0) && (
+              <div className="text-center py-8 text-muted-foreground">
+                <Building className="h-12 w-12 mx-auto mb-2 opacity-50" />
+                <p>Caricamento lead in corso...</p>
+              </div>
+            )}
           </CardContent>
         </Card>
 
@@ -304,62 +305,62 @@ export default function DashboardPage() {
         </Card>
       </div>
 
-      {/* B2C Conversion Funnel */}
+      {/* Milano Lead Pipeline B2B */}
       <Card>
         <CardHeader>
-          <CardTitle>Funnel Conversione B2C → Assicurazioni</CardTitle>
+          <CardTitle>Pipeline B2B Milano → Opportunità Assicurative</CardTitle>
           <CardDescription>
-            Pipeline da simulazioni BudgetCasa.it a opportunità assicurative
+            Funnel da lead professionali raccolti a opportunità business concrete
           </CardDescription>
         </CardHeader>
         <CardContent>
           <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
             <div className="text-center">
               <div className="text-2xl font-bold text-blue-600">
-                {b2cAnalytics?.conversionFunnel.simulations}
+                {dashboardStats?.totalLeads || 0}
               </div>
-              <p className="text-sm text-muted-foreground">Simulazioni Totali</p>
+              <p className="text-sm text-muted-foreground">Lead Raccolti</p>
             </div>
             <div className="text-center">
               <div className="text-2xl font-bold text-green-600">
-                {b2cAnalytics?.conversionFunnel.completedSimulations}
+                {dashboardStats?.assignedLeads || 0}
               </div>
-              <p className="text-sm text-muted-foreground">Completate</p>
+              <p className="text-sm text-muted-foreground">Assegnati Agenti</p>
             </div>
             <div className="text-center">
               <div className="text-2xl font-bold text-purple-600">
-                {b2cAnalytics?.conversionFunnel.qualifiedLeads}
+                {dashboardStats?.highQualityLeads || 0}
               </div>
-              <p className="text-sm text-muted-foreground">Lead Qualificati</p>
+              <p className="text-sm text-muted-foreground">Alta Qualità</p>
             </div>
             <div className="text-center">
               <div className="text-2xl font-bold text-yellow-600">
-                €{(b2cAnalytics?.conversionFunnel.estimatedValue / 1000).toFixed(0)}K
+                €{Math.floor((dashboardStats?.totalRevenueOpportunity || 0) / 1000)}K
               </div>
-              <p className="text-sm text-muted-foreground">Valore Potenziale</p>
+              <p className="text-sm text-muted-foreground">Revenue Opportunity</p>
             </div>
           </div>
 
           <div className="mt-6 pt-4 border-t">
-            <h4 className="font-semibold mb-3">Attività Recente da BudgetCasa.it</h4>
+            <h4 className="font-semibold mb-3">Metriche Qualità e Performance</h4>
             <div className="grid grid-cols-3 gap-4 text-center">
               <div>
                 <div className="text-lg font-bold text-green-600">
-                  +{b2cAnalytics?.recentActivity.last24h}
+                  {dashboardStats?.qualityScore || 0}%
                 </div>
-                <p className="text-sm text-muted-foreground">Ultime 24h</p>
+                <p className="text-sm text-muted-foreground">Tasso Qualità</p>
               </div>
               <div>
                 <div className="text-lg font-bold text-blue-600">
-                  +{b2cAnalytics?.recentActivity.last7days}
+                  {dashboardStats?.enrichmentRate || 0}%
                 </div>
-                <p className="text-sm text-muted-foreground">Ultima settimana</p>
+                <p className="text-sm text-muted-foreground">Arricchimento</p>
               </div>
               <div>
                 <div className="text-lg font-bold text-purple-600">
-                  {b2cAnalytics?.recentActivity.last30days}
+                  +{dashboardStats?.weeklyGrowth || 0}%
                 </div>
-                <p className="text-sm text-muted-foreground">Ultimo mese</p>
+                <p className="text-sm text-muted-foreground">Crescita Settimana</p>
               </div>
             </div>
           </div>
@@ -466,30 +467,87 @@ export default function DashboardPage() {
         </CardContent>
       </Card>
 
-      {/* Top Cities from B2C */}
-      <Card>
-        <CardHeader>
-          <CardTitle>🎯 Territori Caldi</CardTitle>
-          <CardDescription>
-            Zone con maggior attività di acquisto casa da BudgetCasa.it
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            {b2cAnalytics?.topCities.map((city: any, index: number) => (
-              <div key={city.city} className="text-center p-4 rounded-lg bg-gray-50">
-                <div className="text-2xl font-bold text-blue-600">
-                  {city.count}
+      {/* Zone Breakdown Milano */}
+      <div className="grid gap-6 md:grid-cols-2">
+        <Card>
+          <CardHeader>
+            <CardTitle>🎯 Zone Milano - Breakdown</CardTitle>
+            <CardDescription>
+              Distribuzione lead per zona con percentuali
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-4">
+              {(dashboardStats?.zoneBreakdown || []).map((zone, index) => (
+                <div key={zone.zona} className="flex items-center justify-between p-3 rounded-lg bg-gray-50">
+                  <div className="flex items-center space-x-3">
+                    <div className={`w-8 h-8 rounded-full flex items-center justify-center text-white font-bold text-sm ${
+                      index === 0 ? 'bg-blue-600' : 
+                      index === 1 ? 'bg-green-600' : 
+                      index === 2 ? 'bg-purple-600' : 'bg-orange-600'
+                    }`}>
+                      {index + 1}
+                    </div>
+                    <div>
+                      <p className="font-medium">{zone.zona}</p>
+                      <p className="text-sm text-muted-foreground">{zone.percentage}% del totale</p>
+                    </div>
+                  </div>
+                  <div className="text-2xl font-bold text-blue-600">
+                    {zone.count}
+                  </div>
                 </div>
-                <p className="font-medium">{city.city}</p>
-                <p className="text-sm text-muted-foreground">
-                  Lead attivi #{index + 1}
-                </p>
-              </div>
-            ))}
-          </div>
-        </CardContent>
-      </Card>
+              ))}
+              {(!dashboardStats?.zoneBreakdown || dashboardStats.zoneBreakdown.length === 0) && (
+                <div className="text-center py-8 text-muted-foreground">
+                  <MapPin className="h-12 w-12 mx-auto mb-2 opacity-50" />
+                  <p>Caricamento statistiche zone...</p>
+                </div>
+              )}
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* Industry Breakdown */}
+        <Card>
+          <CardHeader>
+            <CardTitle>🏢 Settori Professionali</CardTitle>
+            <CardDescription>
+              Top settori per numero di lead raccolti
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-4">
+              {(dashboardStats?.industryBreakdown || []).slice(0, 4).map((industry, index) => (
+                <div key={industry.industry} className="flex items-center justify-between p-3 rounded-lg bg-gray-50">
+                  <div className="flex items-center space-x-3">
+                    <div className={`w-8 h-8 rounded-full flex items-center justify-center text-white font-bold text-sm ${
+                      index === 0 ? 'bg-emerald-600' : 
+                      index === 1 ? 'bg-red-600' : 
+                      index === 2 ? 'bg-yellow-600' : 'bg-indigo-600'
+                    }`}>
+                      {index + 1}
+                    </div>
+                    <div>
+                      <p className="font-medium">{industry.industry}</p>
+                      <p className="text-sm text-muted-foreground">€{Math.floor(industry.revenue / 1000)}K fatturato medio</p>
+                    </div>
+                  </div>
+                  <div className="text-2xl font-bold text-emerald-600">
+                    {industry.count}
+                  </div>
+                </div>
+              ))}
+              {(!dashboardStats?.industryBreakdown || dashboardStats.industryBreakdown.length === 0) && (
+                <div className="text-center py-8 text-muted-foreground">
+                  <Building className="h-12 w-12 mx-auto mb-2 opacity-50" />
+                  <p>Caricamento statistiche settori...</p>
+                </div>
+              )}
+            </div>
+          </CardContent>
+        </Card>
+      </div>
     </div>
   )
 }
