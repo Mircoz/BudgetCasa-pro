@@ -1,0 +1,89 @@
+{
+  "Isola": [
+    "e32be80e-c3a0-4f29-b22e-31b4c0445491",
+    "42e426c6-afd0-4ea9-8ce0-5b78e4e37b71",
+    "09e2a4ae-d4d0-46b0-b3de-a7c7a1ce1426",
+    "a6e8ff27-d4b1-4a71-9ec2-1ccf14f3a3a7",
+    "4ce77d4b-032d-419c-8198-23ef67c3a84a"
+  ],
+  "Dergano": [
+    "0f114166-e18f-4ed0-8ceb-5bf71ad92edd",
+    "6d2add3b-0317-49bc-bfee-144ac0a7a7b4",
+    "ac87fcaa-c083-4734-ab31-29a3d2345c11",
+    "c3cf9990-ec65-4f17-a3b6-0a6025f6b744"
+  ],
+  "Niguarda": [
+    "7a1b626d-af92-479e-b4fc-3d0a001b9520",
+    "dbdaa3c2-aa3e-4a14-b7ab-a574690229ce",
+    "b0ae66d4-b2b4-42c2-bbb7-bb61e5cbb708",
+    "2aa8873b-448e-4177-abfc-6ef1c825a0b4"
+  ],
+  "Porta Romana": [
+    "a97164c4-0a4e-4f8b-a9e2-4c9b205574eb",
+    "01f47d76-7f7f-4217-8aa8-95c16e58aa12",
+    "cb04f57c-6c50-408d-ad20-30f218d00ea4",
+    "3d932be3-91a6-4fee-843c-bf145b13ddaf",
+    "0cb31e39-81c8-4f3a-9831-e4333a03815d"
+  ],
+  "Navigli": [
+    "1b2d49b0-c976-4af0-a31c-3264371f7fcb",
+    "c6be71e4-1a65-45f4-812a-5f6de6b181f8",
+    "c608852d-1658-4ebc-a394-a8f986129a5a",
+    "97922e2f-9697-4c39-b08d-f417b34cf551",
+    "eaeb6eb4-ecdd-4b49-9428-4628af9d51f2"
+  ],
+  "Bovisa": [
+    "54cb9393-58b5-4bef-a1af-fc9511699a53",
+    "f5e67a9b-7f49-44da-81a8-870bbe24ee1e",
+    "6b79b254-8bd5-4215-a67e-cd24be5ed46f",
+    "37c26abc-9120-490f-a72a-809ea3e9e8eb"
+  ],
+  "Lambrate": [
+    "69ff504d-7521-46fd-ac03-81816c92b1f1",
+    "32808ee8-59cb-4d14-ae15-7df1926c7112",
+    "0ca70b56-c786-4e03-aaee-1d7a1e529c33",
+    "0314f26a-a322-47e3-8a61-301db0aee08f"
+  ],
+  "Città Studi": [
+    "5fd795c5-ced0-4767-827e-b77fc8478770",
+    "329e71b0-eb7a-417e-b4c2-5f31ab20d978",
+    "e1bb4880-b23a-4d5e-bc7c-14dfedeba580",
+    "6513d074-56cc-4aff-84bb-88769c8faf16",
+    "29cd2a6c-b254-4ad7-9fba-d3d5c599f600"
+  ],
+  "Porta Venezia": [
+    "6bcfca70-e1c7-48e1-836e-fe272a5e7d45",
+    "674a886c-72e1-4d17-98d9-28baed422958",
+    "d1a2bb9e-d472-4b01-81cf-f71ce494426d",
+    "3e4bd0ee-ca85-4cc9-a95c-b6fe64820c2d"
+  ],
+  "Bande Nere": [
+    "f327f29d-c313-4f39-ab9f-6d25121dda51",
+    "d2de36a4-f912-4c0b-b51c-5a4dc1a0b1d8",
+    "5ddac1e5-4cca-4aa1-b9cc-4f3d4ba0605c",
+    "e49b8588-d1a9-49d7-a0b5-d32fd14eb030"
+  ],
+  "CityLife": [
+    "f2deb2b8-1347-4548-ba81-4f47d153b072",
+    "bd67f5c8-3fbf-4c0e-8fe6-03c122689a7e",
+    "9d4b2e09-5b26-4ad3-93e1-0d29ad3e6e32",
+    "0d6ae02a-1271-453a-9f0f-5316154c8359",
+    "d1ca6c3d-cc4b-4f21-be64-43dcfdbe4bea"
+  ],
+  "QT8": [
+    "a88caef1-1efe-49ec-9491-e50dfe740667",
+    "a466a491-3d13-4acc-a47a-ee1f2875be99"
+  ],
+  "NoLo": [
+    "68f6261f-a3dd-47dd-8ccd-8a610090598d",
+    "d9f0cd96-dc4f-40e5-9cce-58f906c15613",
+    "caf08adf-e648-45c3-8f11-b1d62a7d8e47",
+    "ac70ef8f-10bc-4af5-b432-ce312e3b1d06"
+  ],
+  "Ortica": [
+    "38db4d1d-c70d-4176-a2a2-7b262fc322dc",
+    "e36fcd49-775d-4145-8972-cda4cabc1ee6",
+    "60c8014e-ec04-4bf3-892c-33b63718da2d",
+    "bdc41531-1d55-41c2-b288-75ed136e0612"
+  ]
+}

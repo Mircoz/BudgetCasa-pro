@@ -52,7 +52,7 @@ export function EnhancedPersonCard({
   defaultExpanded = false 
 }: EnhancedPersonCardProps) {
   const [isExpanded, setIsExpanded] = useState(defaultExpanded)
-  const { scores, criticalInfo, b2c_engagement, demographics } = person
+  const { scores = {}, criticalInfo, b2c_engagement, demographics } = person
   const isB2CLead = person.id.startsWith('b2c_')
 
   // Calculate urgency color based on score
@@ -227,11 +227,11 @@ export function EnhancedPersonCard({
               )}
 
               {/* Risk Profile Quick View */}
-              {scores.risk_home !== undefined && (
+              {scores?.risk_home !== undefined && (
                 <div className="flex items-center space-x-1">
                   <Shield className="h-4 w-4 text-orange-500" />
                   <span className="text-sm">
-                    Risk {(scores.risk_home * 100).toFixed(0)}%
+                    Risk {(scores?.risk_home * 100).toFixed(0)}%
                   </span>
                 </div>
               )}
@@ -315,44 +315,44 @@ export function EnhancedPersonCard({
 
             {/* LEVEL 3 - DETAILED SCORES */}
             <div className="grid grid-cols-2 gap-3 pt-3 border-t">
-              {scores.risk_home !== undefined && (
+              {scores?.risk_home !== undefined && (
                 <div className="text-center p-3 bg-orange-50 rounded-lg">
                   <div className="flex items-center justify-center mb-1">
                     <Home className="h-4 w-4 text-orange-600 mr-1" />
                     <span className="text-sm font-medium text-orange-800">Casa</span>
                   </div>
                   <div className="text-lg font-bold text-orange-600">
-                    {formatPercentage(scores.risk_home)}
+                    {formatPercentage(scores?.risk_home)}
                   </div>
                   <p className="text-xs text-orange-700">
-                    Rischio {getScoreLabel(scores.risk_home, 'risk')}
+                    Rischio {getScoreLabel(scores?.risk_home, 'risk')}
                   </p>
                 </div>
               )}
 
-              {scores.opportunity_home !== undefined && (
+              {scores?.opportunity_home !== undefined && (
                 <div className="text-center p-3 bg-green-50 rounded-lg">
                   <div className="flex items-center justify-center mb-1">
                     <Sparkles className="h-4 w-4 text-green-600 mr-1" />
                     <span className="text-sm font-medium text-green-800">Opportunità</span>
                   </div>
                   <div className="text-lg font-bold text-green-600">
-                    {formatPercentage(scores.opportunity_home)}
+                    {formatPercentage(scores?.opportunity_home)}
                   </div>
                   <p className="text-xs text-green-700">
-                    {getScoreLabel(scores.opportunity_home, 'opportunity')}
+                    {getScoreLabel(scores?.opportunity_home, 'opportunity')}
                   </p>
                 </div>
               )}
 
-              {scores.risk_mobility !== undefined && (
+              {scores?.risk_mobility !== undefined && (
                 <div className="text-center p-3 bg-blue-50 rounded-lg">
                   <div className="flex items-center justify-center mb-1">
                     <Car className="h-4 w-4 text-blue-600 mr-1" />
                     <span className="text-sm font-medium text-blue-800">Mobilità</span>
                   </div>
                   <div className="text-lg font-bold text-blue-600">
-                    {formatPercentage(scores.risk_mobility)}
+                    {formatPercentage(scores?.risk_mobility)}
                   </div>
                   <p className="text-xs text-blue-700">
                     Rischio Auto
@@ -360,14 +360,14 @@ export function EnhancedPersonCard({
                 </div>
               )}
 
-              {scores.opportunity_life !== undefined && (
+              {scores?.opportunity_life !== undefined && (
                 <div className="text-center p-3 bg-purple-50 rounded-lg">
                   <div className="flex items-center justify-center mb-1">
                     <Heart className="h-4 w-4 text-purple-600 mr-1" />
                     <span className="text-sm font-medium text-purple-800">Vita</span>
                   </div>
                   <div className="text-lg font-bold text-purple-600">
-                    {formatPercentage(scores.opportunity_life)}
+                    {formatPercentage(scores?.opportunity_life)}
                   </div>
                   <p className="text-xs text-purple-700">
                     Opportunità Life

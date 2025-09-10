@@ -1,0 +1,22 @@
+CREATE TABLE IF NOT EXISTS milano_leads (
+  id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
+  first_name TEXT NOT NULL,
+  last_name TEXT NOT NULL,
+  email TEXT,
+  phone TEXT,
+  address_street TEXT,
+  address_cap TEXT,
+  zona TEXT,
+  estimated_income INTEGER,
+  family_size INTEGER,
+  home_ownership TEXT,
+  propensity_casa INTEGER,
+  propensity_auto INTEGER,
+  propensity_vita INTEGER,
+  propensity_business INTEGER,
+  data_source TEXT,
+  data_quality_score INTEGER,
+  lead_status TEXT DEFAULT 'new',
+  conversion_probability INTEGER,
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+);

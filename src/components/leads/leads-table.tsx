@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import React, { useState } from "react";
 import { ChevronDown, ChevronUp, Phone, Mail, Calendar, MoreHorizontal, Filter } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -236,7 +236,7 @@ export function LeadsTable({ leads, onLeadSelect, onLeadAction }: LeadsTableProp
                   onCheckedChange={handleSelectAll}
                 />
               </th>
-              <th className="px-4 py-3"></th> {/* Expand toggle */}
+              <th className="px-4 py-3"></th>
               <SortableHeader field="leadScore">Score</SortableHeader>
               <SortableHeader field="name">Nome</SortableHeader>
               <SortableHeader field="city">Località</SortableHeader>
@@ -254,9 +254,8 @@ export function LeadsTable({ leads, onLeadSelect, onLeadAction }: LeadsTableProp
           </thead>
           <tbody className="bg-white divide-y divide-gray-200">
             {filteredLeads.map((lead) => (
-              <>
+              <React.Fragment key={lead.id}>
                 <tr 
-                  key={lead.id} 
                   className={cn(
                     "hover:bg-gray-50 transition-colors",
                     rowHeight[density],
@@ -425,7 +424,7 @@ export function LeadsTable({ leads, onLeadSelect, onLeadAction }: LeadsTableProp
                     </td>
                   </tr>
                 )}
-              </>
+              </React.Fragment>
             ))}
           </tbody>
         </table>

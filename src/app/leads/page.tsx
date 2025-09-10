@@ -19,7 +19,8 @@ import {
   Sparkles,
   Loader2
 } from 'lucide-react'
-import { searchPersons, getLeadSuggestions, getLists, addToList, createList, trackEvent } from '@/lib/api-mock'
+import { searchMilanoLeads, transformLeadToPersonCard, getLeadStats } from '@/lib/supabase-leads-api'
+import { getLeadSuggestions, getLists, addToList, createList, trackEvent } from '@/lib/api-mock'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import type { PersonCard as PersonCardType, PersonFilters as PersonFiltersType, PolicySuggestion } from '@/lib/types'
 import { POLICY_LABELS } from '@/lib/types'
@@ -34,6 +35,15 @@ export default function LeadsPage() {
   const [currentPage, setCurrentPage] = useState(1)
   const [totalPages, setTotalPages] = useState(1)
   const [totalResults, setTotalResults] = useState(0)
+  const [leadStats, setLeadStats] = useState({
+    totalLeads: 0,
+    assignedLeads: 0,
+    enrichedLeads: 0,
+    highQualityLeads: 0,
+    assignmentRate: 0,
+    enrichmentRate: 0,
+    qualityRate: 0
+  })
 
   // Suggestions dialog
   const [suggestionsOpen, setSuggestionsOpen] = useState(false)
@@ -53,28 +63,38 @@ export default function LeadsPage() {
     setLoading(true)
     try {
       const searchFilters = {
-        ...filters,
         q: searchQuery,
+        zona: filters.city, // Map city filter to zona
+        min_income: filters.min_income,
+        min_quality_score: filters.min_quality_score || 50,
+        lead_status: filters.lead_status,
+        assigned_agent_id: filters.assigned_agent_id,
+        enrichment_status: filters.enrichment_status,
         page,
         page_size: pageSize
       }
 
-      const response = await searchPersons(searchFilters)
-      setPersons(response.items)
+      const response = await searchMilanoLeads(searchFilters)
+      
+      // Transform Milano leads to PersonCard format for UI compatibility
+      const transformedPersons = response.items.map(lead => transformLeadToPersonCard(lead))
+      
+      setPersons(transformedPersons)
       setCurrentPage(response.page)
       setTotalPages(response.total_pages)
       setTotalResults(response.total)
 
       // Track search event
-      trackEvent('pro_search_person', {
+      trackEvent('pro_search_milano_leads', {
         q: searchQuery,
-        city: filters.city,
-        has_children: filters.has_children,
+        zona: filters.city,
         min_income: filters.min_income,
         results: response.total
       })
     } catch (error) {
-      console.error('Search error:', error)
+      console.error('Milano leads search error:', error)
+      setPersons([])
+      setTotalResults(0)
     } finally {
       setLoading(false)
     }
@@ -83,6 +103,20 @@ export default function LeadsPage() {
   useEffect(() => {
     performSearch(1)
   }, [filters, searchQuery])
+
+  useEffect(() => {
+    // Load lead stats on component mount
+    const loadStats = async () => {
+      try {
+        const stats = await getLeadStats()
+        setLeadStats(stats)
+      } catch (error) {
+        console.error('Failed to load lead stats:', error)
+      }
+    }
+    
+    loadStats()
+  }, [])
 
   const handleFiltersChange = (newFilters: PersonFiltersType) => {
     setFilters(newFilters)
@@ -156,9 +190,12 @@ export default function LeadsPage() {
           </p>
         </div>
         <div className="flex items-center space-x-4">
+          <Badge variant="outline" className="text-lg px-3 py-1">
+            {leadStats.totalLeads} lead Milano completa
+          </Badge>
           {totalResults > 0 && (
-            <Badge variant="outline" className="text-lg px-3 py-1">
-              {totalResults} risultati
+            <Badge variant="secondary" className="text-lg px-3 py-1">
+              {totalResults} risultati filtrati
             </Badge>
           )}
         </div>
@@ -195,12 +232,12 @@ export default function LeadsPage() {
                 <span className="font-medium text-red-800 text-sm">🌪️ Disaster-Driven</span>
                 <Badge variant="destructive" className="text-xs">HOT</Badge>
               </div>
-              <div className="text-2xl font-bold text-red-600 mb-1">127</div>
+              <div className="text-2xl font-bold text-red-600 mb-1">{leadStats.highQualityLeads}</div>
               <div className="text-xs text-red-700 space-y-1">
-                <div>Emilia-Romagna flood zone residents</div>
-                <div>📈 Conversion: +340% vs normale</div>
-                <div>💰 Avg premium: €1,850</div>
-                <div>⏰ Strike window: 18 giorni left</div>
+                <div>Milano high-quality leads (80+ score)</div>
+                <div>📈 Quality rate: {leadStats.qualityRate}% of database</div>
+                <div>💰 Avg revenue opportunity: €2,500+</div>
+                <div>⏰ Ready for immediate contact</div>
               </div>
             </div>
 
@@ -210,12 +247,12 @@ export default function LeadsPage() {
                 <span className="font-medium text-purple-800 text-sm">🧠 Psych Profiling</span>
                 <Badge className="bg-purple-100 text-purple-800 text-xs">ACTIVE</Badge>
               </div>
-              <div className="text-2xl font-bold text-purple-600 mb-1">89</div>
+              <div className="text-2xl font-bold text-purple-600 mb-1">{leadStats.enrichedLeads}</div>
               <div className="text-xs text-purple-700 space-y-1">
-                <div>High anxiety personality traits</div>
-                <div>📊 Loss aversion trigger: 91%</div>
-                <div>🎯 Fear-based messaging optimal</div>
-                <div>💬 AI scripts generated: 34</div>
+                <div>Leads enriched with Hunter.io + APIs</div>
+                <div>📊 Enrichment rate: {leadStats.enrichmentRate}%</div>
+                <div>🎯 Email discovery active</div>
+                <div>💬 Professional data available</div>
               </div>
             </div>
 
@@ -225,12 +262,12 @@ export default function LeadsPage() {
                 <span className="font-medium text-blue-800 text-sm">🎣 Competitor Poaching</span>
                 <Badge className="bg-blue-100 text-blue-800 text-xs">HUNTING</Badge>
               </div>
-              <div className="text-2xl font-bold text-blue-600 mb-1">203</div>
+              <div className="text-2xl font-bold text-blue-600 mb-1">{leadStats.assignedLeads}</div>
               <div className="text-xs text-blue-700 space-y-1">
-                <div>Generali clients dissatisfied</div>
-                <div>🔍 Social sentiment: negative</div>
-                <div>💰 Total LTV: €4.2M</div>
-                <div>🎯 Undercut pricing ready</div>
+                <div>Leads assigned to agents</div>
+                <div>🔍 Assignment rate: {leadStats.assignmentRate}%</div>
+                <div>💰 Active territory coverage</div>
+                <div>🎯 Agent optimization active</div>
               </div>
             </div>
           </div>
@@ -318,21 +355,7 @@ export default function LeadsPage() {
       ) : persons.length > 0 ? (
         <>
           <LeadsViewToggle
-            leads={persons.map(person => ({
-              ...person,
-              leadScore: Math.floor(Math.random() * 40) + 60, // 60-100
-              revenueOpportunity: Math.floor(Math.random() * 3000) + 1000, // €1000-4000
-              nextAction: [
-                'Call Now - High Priority',
-                'Send Personal Email', 
-                'Schedule Consultation',
-                'WhatsApp Contact',
-                'Send Proposal'
-              ][Math.floor(Math.random() * 5)],
-              urgencyLevel: (['high', 'medium', 'low'] as const)[Math.floor(Math.random() * 3)],
-              policyInterests: ['casa', 'auto', 'vita', 'salute'].slice(0, Math.floor(Math.random() * 3) + 1),
-              conversionProbability: Math.floor(Math.random() * 40) + 45 // 45-85%
-            }))}
+            leads={persons}
             onLeadSelect={(leadIds) => {
               console.log('Selected leads:', leadIds);
             }}

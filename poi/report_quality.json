@@ -1,0 +1,35 @@
+{
+  "total_pois": 1948,
+  "pois_per_neighborhood": {
+    "Bande Nere": 94,
+    "Città Studi": 221,
+    "Porta Venezia": 312,
+    "Niguarda": 98,
+    "Porta Romana": 170,
+    "Bovisa": 74,
+    "Isola": 288,
+    "Navigli": 336,
+    "Lambrate": 57,
+    "NoLo": 108,
+    "CityLife": 91,
+    "QT8": 12,
+    "Dergano": 77,
+    "Ortica": 10
+  },
+  "pois_per_category": {
+    "cafe": 681,
+    "school": 118,
+    "culture": 56,
+    "coworking": 20,
+    "hospital": 24,
+    "restaurant": 811,
+    "bakery": 107,
+    "shopping": 14,
+    "gym": 29,
+    "park": 88
+  },
+  "percent_with_coordinates": 100.0,
+  "percent_with_phone": 29.47,
+  "percent_with_website": 29.36,
+  "duplicates_fused": 22
+}

@@ -6,7 +6,10 @@
     "dev": "next dev --turbopack",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "collect-milano-leads": "node src/scripts/collect-milano-leads.js",
+    "setup-database": "ts-node -e \"require('./src/lib/supabase/database-client').setupDatabase()\"",
+    "db-status": "ts-node -e \"require('./src/lib/supabase/database-client').MilanoDataService.getLeads().then(r => console.log('Total leads:', r.count))\""
   },
   "dependencies": {
     "@radix-ui/react-avatar": "^1.1.10",
@@ -20,15 +23,18 @@
     "@radix-ui/react-switch": "^1.2.6",
     "@radix-ui/react-tabs": "^1.1.13",
     "@supabase/ssr": "^0.7.0",
-    "@supabase/supabase-js": "^2.57.3",
+    "@supabase/supabase-js": "^2.57.4",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
+    "dotenv": "^17.2.2",
     "lucide-react": "^0.543.0",
     "next": "15.5.2",
+    "puppeteer": "^24.19.0",
     "react": "19.1.0",
     "react-dom": "19.1.0",
     "recharts": "^3.2.0",
-    "tailwind-merge": "^3.3.1"
+    "tailwind-merge": "^3.3.1",
+    "ts-node": "^10.9.2"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",

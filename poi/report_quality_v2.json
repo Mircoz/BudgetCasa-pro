@@ -1,0 +1,20 @@
+{
+  "total_poi": 1948,
+  "with_rating_percentage": 0.7859,
+  "with_reviews_percentage": 0.7859,
+  "coverage_by_category": {
+    "cafe": 0.8899,
+    "bakery": 0.9278,
+    "restaurant": 0.9708,
+    "school": 0.3913,
+    "shopping": 0.8462,
+    "culture": 0.94,
+    "gym": 0.8929,
+    "coworking": 1.0,
+    "hospital": 1.0,
+    "park": 0.7727
+  },
+  "api_errors": 0,
+  "zero_results": 3,
+  "used_text_fallback": 591
+}
