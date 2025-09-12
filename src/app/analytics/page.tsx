@@ -1,7 +1,7 @@
-import { AgentPerformanceDashboard } from '@/components/analytics/agent-performance-dashboard'
+import { RealTerritoryDashboard } from '@/components/analytics/real-territory-dashboard'
 
 export const dynamic = 'force-dynamic'
 
 export default function AnalyticsPage() {
-  return <AgentPerformanceDashboard />
+  return <RealTerritoryDashboard />
 }

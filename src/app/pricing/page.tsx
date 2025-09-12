@@ -1,7 +1,7 @@
-import { PremiumIntelligenceSystem } from '@/components/pricing/premium-intelligence-system'
+import { RealPricingIntelligenceDashboard } from '@/components/analytics/real-pricing-intelligence'
 
 export const dynamic = 'force-dynamic'
 
 export default function PricingPage() {
-  return <PremiumIntelligenceSystem />
+  return <RealPricingIntelligenceDashboard />
 }

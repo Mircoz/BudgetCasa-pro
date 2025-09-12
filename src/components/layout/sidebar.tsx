@@ -16,7 +16,8 @@ import {
   Shield,
   ShoppingCart,
   TrendingUp,
-  Target
+  Target,
+  Star
 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 const navigation = [
@@ -29,9 +30,10 @@ const navigation = [
 ]
 
 const premiumNavigation = [
-  { name: 'Agent Analytics', href: '/analytics', icon: TrendingUp },
+  { name: 'Territory Analytics', href: '/analytics', icon: TrendingUp },
   { name: 'Pricing Intelligence', href: '/pricing', icon: Calculator },
   { name: 'Cross-Sell Matrix', href: '/crosssell', icon: ShoppingCart },
+  { name: 'Performance Metrics', href: '/performance', icon: Star },
   { name: 'GDPR Compliance', href: '/compliance', icon: Shield },
 ]
 
