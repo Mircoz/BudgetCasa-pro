@@ -11,7 +11,12 @@ import {
   Settings,
   LogOut,
   BarChart3,
-  MapPin
+  MapPin,
+  Calculator,
+  Shield,
+  ShoppingCart,
+  TrendingUp,
+  Target
 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 const navigation = [
@@ -21,6 +26,13 @@ const navigation = [
   { name: 'Market Insights', href: '/insights', icon: BarChart3 },
   { name: 'Liste Salvate', href: '/lists', icon: BookmarkCheck },
   { name: 'Impostazioni', href: '/settings', icon: Settings },
+]
+
+const premiumNavigation = [
+  { name: 'Agent Analytics', href: '/analytics', icon: TrendingUp },
+  { name: 'Pricing Intelligence', href: '/pricing', icon: Calculator },
+  { name: 'Cross-Sell Matrix', href: '/crosssell', icon: ShoppingCart },
+  { name: 'GDPR Compliance', href: '/compliance', icon: Shield },
 ]
 
 export function Sidebar() {
@@ -34,25 +46,60 @@ export function Sidebar() {
       </div>
 
       {/* Navigation */}
-      <nav className="flex-1 px-4 py-4 space-y-2">
-        {navigation.map((item) => {
-          const isActive = pathname === item.href
-          return (
-            <Link key={item.name} href={item.href}>
-              <div
-                className={cn(
-                  'flex items-center px-3 py-2 rounded-lg text-sm font-medium transition-colors',
-                  isActive 
-                    ? 'bg-blue-600 text-white' 
-                    : 'text-gray-300 hover:text-white hover:bg-gray-700'
-                )}
-              >
-                <item.icon className="mr-3 h-5 w-5" />
-                {item.name}
-              </div>
-            </Link>
-          )
-        })}
+      <nav className="flex-1 px-4 py-4 space-y-4">
+        {/* Core Navigation */}
+        <div className="space-y-2">
+          <div className="text-xs font-semibold text-gray-400 uppercase tracking-wider px-3">
+            Core Platform
+          </div>
+          {navigation.map((item) => {
+            const isActive = pathname === item.href
+            return (
+              <Link key={item.name} href={item.href}>
+                <div
+                  className={cn(
+                    'flex items-center px-3 py-2 rounded-lg text-sm font-medium transition-colors',
+                    isActive 
+                      ? 'bg-blue-600 text-white' 
+                      : 'text-gray-300 hover:text-white hover:bg-gray-700'
+                  )}
+                >
+                  <item.icon className="mr-3 h-5 w-5" />
+                  {item.name}
+                </div>
+              </Link>
+            )
+          })}
+        </div>
+
+        {/* Premium Features */}
+        <div className="space-y-2">
+          <div className="text-xs font-semibold text-yellow-400 uppercase tracking-wider px-3 flex items-center">
+            <Target className="h-3 w-3 mr-2" />
+            Premium AI
+          </div>
+          {premiumNavigation.map((item) => {
+            const isActive = pathname === item.href
+            return (
+              <Link key={item.name} href={item.href}>
+                <div
+                  className={cn(
+                    'flex items-center px-3 py-2 rounded-lg text-sm font-medium transition-colors border-l-2',
+                    isActive 
+                      ? 'bg-yellow-600 text-white border-yellow-400' 
+                      : 'text-gray-300 hover:text-white hover:bg-gray-700 border-transparent hover:border-yellow-400'
+                  )}
+                >
+                  <item.icon className="mr-3 h-4 w-4" />
+                  {item.name}
+                  <div className="ml-auto">
+                    <div className="w-2 h-2 bg-yellow-400 rounded-full animate-pulse"></div>
+                  </div>
+                </div>
+              </Link>
+            )
+          })}
+        </div>
       </nav>
 
       {/* Footer */}
